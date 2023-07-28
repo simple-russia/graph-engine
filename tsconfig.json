@@ -9,6 +9,6 @@
       "jsx": "react-jsx",
       "allowJs": true,
       "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
+      "allowSyntheticDefaultImports": true
     }
 }
