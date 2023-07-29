@@ -81,10 +81,12 @@ export class Scene {
 
     render () {
         const ctx = this.canvas.getContext("2d");
+        ctx.clearRect(0, 0, this.width, this.height);
+
         const fillStyle = color(this.bgColor);
         ctx.fillStyle = fillStyle;
+        ctx.fillRect(0, 0, this.width, this.height);
 
-        ctx.clearRect(0, 0, this.width, this.height);
 
         this.children.forEach(object2d => {
             object2d.render(this);
