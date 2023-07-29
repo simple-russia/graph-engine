@@ -1,4 +1,5 @@
 import { Line } from "./engine/basicObjects/line";
+import { CameraControls } from "./engine/helpers/cameraControls";
 import { Scene } from "./engine/scene";
 
 const root = document.querySelector("#root")!;
@@ -14,7 +15,10 @@ scene.add(new Line({ x: 0, y: -150 }, { x: 0, y: 150 }));
 scene.add(new Line({ x: -75, y: -150 }, { x: -75, y: 150 }, 10));
 scene.add(new Line({ x: 75, y: -150 }, { x: 75, y: 150 }, 20));
 
-scene.fps = 2;
+scene.fps = 30;
+
+const cameraControls = new CameraControls(scene);
+
 scene.start();
 
 

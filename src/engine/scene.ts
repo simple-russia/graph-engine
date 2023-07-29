@@ -35,6 +35,8 @@ export class Scene {
         this.children = [];
 
         rootElement.appendChild(canvas);
+
+        this.preventContextMenu();
     }
 
 
@@ -95,5 +97,9 @@ export class Scene {
 
     remove (object2d: Object2D) {
         this.children = this.children.filter(obj => obj !== object2d);
+    }
+
+    private preventContextMenu () {
+        this.canvas.addEventListener("contextmenu", e => e.preventDefault());
     }
 }

@@ -1,5 +1,10 @@
 import { point2D } from "./types";
 
+
+const DEFAULT_ZOOM_STEP = 0.8;
+const MAX_ZOOM = 10;
+const MIN_ZOOM = 0.1;
+
 export class Camera {
     private __realZoom = 0;
     public position: point2D;
@@ -26,6 +31,24 @@ export class Camera {
     set zoom(value) {
         if (typeof value !== "number" || Number.isNaN(value)) return ;
 
-        this.__realZoom = value;
+        let newZoom = value;
+
+        if (newZoom > MAX_ZOOM) {
+            newZoom = MAX_ZOOM;
+        }
+
+        if (newZoom < MIN_ZOOM) {
+            newZoom = MIN_ZOOM;
+        }
+
+        this.__realZoom = newZoom;
+    }
+
+    public zoomIn() {
+        this.zoom = this.zoom * DEFAULT_ZOOM_STEP;
+    }
+
+    public zoomOut() {
+        this.zoom = this.zoom / DEFAULT_ZOOM_STEP;
     }
 }
