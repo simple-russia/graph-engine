@@ -6,4 +6,5 @@ export const enum COLORS {
     "GREEN" = 0x00FF00,
     "LIGHTBLUE" = 0x00FFFF,
     "ORANGE" = 0xFFA500,
+    "WHITE" = 0xFFFFFF,
 }

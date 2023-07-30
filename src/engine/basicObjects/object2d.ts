@@ -4,6 +4,7 @@ import { Scene } from "../scene";
 export abstract class Object2D {
     public id: string;
     public isObject2D = true;
+    public renderPriority = 0;
 
     constructor () {
         this.id = generateUUID();

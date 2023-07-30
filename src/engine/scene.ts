@@ -104,10 +104,15 @@ export class Scene {
     }
 
     add (object2d: Object2D) {
+        if (this.children.includes(object2d)) return ;
+
         this.children.push(object2d);
+
         if (object2d.onAddedToScene) {
             object2d.onAddedToScene(this);
         }
+
+        this.children.sort();
     }
 
     remove (object2d: Object2D) {

@@ -10,21 +10,23 @@ export class Text extends Object2D {
     public color: number;
     public fontSize: number;
     public text: string;
+    public ignoreZoom: boolean;
 
 
-    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000) {
+    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false) {
         super();
         this.color = color;
         this.position = position;
         this.fontSize = fontSize;
         this.text = text;
+        this.ignoreZoom = ignoreZoom;
     }
 
     render (scene: Scene) {
         const ctx = scene.canvas.getContext("2d");
         const camera = scene.camera;
 
-        const fontSize = this.fontSize * 1 / camera.zoom;
+        const fontSize = this.fontSize / (this.ignoreZoom ? 1 : camera.zoom);
 
         ctx.fillStyle = color(this.color);
         ctx.font = `${fontSize}px Arial`;
@@ -34,7 +36,7 @@ export class Text extends Object2D {
 
         textPos.y *= -1;
 
-        textPos.x = textPos.x - (ctx.measureText(this.text).width / 2) * camera.zoom;
+        // textPos.x = textPos.x - (ctx.measureText(this.text).width / 2) * camera.zoom;
 
         textPos.x = textPos.x * 1 / camera.zoom;
         textPos.y = textPos.y * 1 / camera.zoom;
