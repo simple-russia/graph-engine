@@ -9,5 +9,7 @@ export abstract class Object2D {
         this.id = generateUUID();
     }
 
+    public onAddedToScene?(scene: Scene): void;
+
     abstract render (scene: Scene): void;
 }

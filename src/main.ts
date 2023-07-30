@@ -1,16 +1,22 @@
 import { Line } from "./engine/basicObjects/line";
 import { Text } from "./engine/basicObjects/text";
 import { CameraControls } from "./engine/helpers/cameraControls";
+import { FPSHelper } from "./engine/helpers/fpsHelper";
 import { MathFunction } from "./engine/objectLibrary/function";
 import { Scene } from "./engine/scene";
+import { COLORS } from "./utils/colors";
 
 const root = document.querySelector("#root")!;
 
 const scene = new Scene(root);
-scene.fps = 30;
+scene.fps = 50;
 scene.bgColor = 0x000000;
 
 const cameraControls = new CameraControls(scene);
+cameraControls.eventHandler.subscribe("dragStart", () => root.classList.add("dragging"));
+cameraControls.eventHandler.subscribe("dragEnd", () => root.classList.remove("dragging"));
+
+new FPSHelper(scene);
 
 const axisXColor = 0xFFFFFF;
 const axisYColor = 0xFFFFFF;
@@ -20,6 +26,7 @@ const line2 = new Line({ x: 0, y: -1000 }, { x: 0, y: 1000 }, 1, axisYColor, tru
 scene.add(line1);
 scene.add(line2);
 scene.add(new Text("0", { x: 10, y: 10 }, 10, 0xFFFFFF));
+
 
 for (let i = -20; i <= 20; i++) {
     if (i === 0) continue;
@@ -34,20 +41,14 @@ for (let i = -20; i <= 20; i++) {
 
 scene.start();
 
-// scene.add(new Line({ x: 100, y: 100 }, { x: 100, y: 200 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 100, y: 200 }, { x: 200, y: 200 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 200, y: 200 }, { x: 200, y: 100 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 200, y: 100 }, { x: 100, y: 100 }, 1, 0xFFFFFF));
+scene.add(new MathFunction((x => Math.sin(0.02 * x) * 100), 0x33A5FF));
+scene.add(new MathFunction((x => 1/(x - 50) * 5000), COLORS.BLUE));
 
-// scene.add(new Line({ x: 600, y: 600 }, { x: 600, y: 200 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 600, y: 200 }, { x: 200, y: 200 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 200, y: 200 }, { x: 200, y: 600 }, 1, 0xFFFFFF));
-// scene.add(new Line({ x: 200, y: 600 }, { x: 600, y: 600 }, 1, 0xFFFFFF));
+scene.add(new MathFunction((x => 0.5 * -Math.sqrt(300 ** 2 - x ** 2) + 100), COLORS.LIGHTBLUE));
+scene.add(new MathFunction((x => 0.5 * Math.sqrt(300 ** 2 - x ** 2) + 100), COLORS.LIGHTBLUE));
 
-scene.add(new MathFunction((x => x * 0.5 - 200), -1000, 1000, 10, 0xFF0000));
-scene.add(new MathFunction((x => 0.01 * x ** 2 + 40), -1000, 1000, 10, 0x0000FF));
-scene.add(new MathFunction((x => Math.sin(0.02 * x) * 100), -1000, 1000, 10, 0xFFFF00));
-scene.add(new MathFunction((x => 1/x * 5000), -1000, 1000, 5, 0x00FF00));
+scene.add(new MathFunction(x => 3 * x ** 3, COLORS.RED));
+
 
 // @ts-ignore
 window.scene = scene;

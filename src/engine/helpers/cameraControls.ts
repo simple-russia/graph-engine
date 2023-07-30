@@ -1,3 +1,4 @@
+import { EventHandler } from "../events/eventsHandler";
 import { Scene } from "../scene";
 
 const enum MouseButtons {
@@ -18,6 +19,8 @@ export class CameraControls {
     private onMouseDown: (e: MouseEvent) => void;
     private onMouseUp: (e: MouseEvent) => void;
 
+    public eventHandler: EventHandler;
+
 
     constructor (scene: Scene) {
         this.scene = scene;
@@ -25,6 +28,8 @@ export class CameraControls {
 
         this.startWheelZoom();
         this.startMouseDrag();
+
+        this.eventHandler = new EventHandler(["dragStart", "dragEnd"]);
     }
 
 
@@ -44,12 +49,14 @@ export class CameraControls {
         this.onMouseDown = (e) => {
             if (e.button === this.mouseDragButton) {
                 this.isMouseDown = true;
+                this.eventHandler.emit("dragStart");
             }
         };
 
         this.onMouseUp = (e) => {
             if (e.button === this.mouseDragButton) {
                 this.isMouseDown = false;
+                this.eventHandler.emit("dragEnd");
             }
         };
 

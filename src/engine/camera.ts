@@ -2,8 +2,8 @@ import { point2D } from "./types";
 
 
 const DEFAULT_ZOOM_STEP = 0.8;
-const MAX_ZOOM = 10;
-const MIN_ZOOM = 0.1;
+const MAX_ZOOM = 1000;
+const MIN_ZOOM = 0.001;
 
 export class Camera {
     private __realZoom = 0;

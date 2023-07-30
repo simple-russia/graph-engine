@@ -2,45 +2,83 @@ import { Line } from "../basicObjects/line";
 import { Object2D } from "../basicObjects/object2d";
 import { Scene } from "../scene";
 
+const stepsPerVisible = 1000;
+const leftExtraSteps = -2;
+const rightExtraSteps = -1;
+const totalSteps = stepsPerVisible + leftExtraSteps + rightExtraSteps;
+const totalLines = totalSteps - 1;
+
+
 export class MathFunction extends Object2D {
     public readonly formula: (x: number) => number;
     public fromX: number;
     public toX: number;
     public step: number;
     public color: number;
+    private functionLines: Line[];
 
-    private lineSegments: Line[];
+    private bounbaryLine: Line;
 
-    constructor (formula: (x: number) => number, fromX = 1000, toX = 1000, step = 25, color=0xFF0000) {
+    constructor (formula: (x: number) => number, color=0xFF0000) {
         super();
-        this.fromX = fromX;
-        this.toX = toX;
-        this.step = step;
+
         this.color = color;
         this.formula = formula;
-        this.lineSegments = [];
+
+        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, 1, color, true));
+    }
+
+    public onAddedToScene(scene: Scene): void {
+        this.functionLines.forEach(line => {
+            scene.add(line);
+        });
     }
 
     render (scene: Scene) {
-        for (const line of this.lineSegments) {
-            scene.remove(line);
-        }
-        this.lineSegments = [];
+        const visibleXRange = scene.width * scene.camera.zoom;
+        const step = visibleXRange / stepsPerVisible;
 
-        let prevX: null | number = null;
-        let prevY: null | number = null;
+        let center = scene.camera.position.x;
 
-        for (let i = this.fromX; i <= this.toX; i += this.step) {
-            const x = i;
+        let normalizedCenter = center - center % step;
+        let leftBoundaryXnormalized = normalizedCenter - (Math.floor(stepsPerVisible / 2) + leftExtraSteps) * step;
+        let rightBoundaryXnormalized = normalizedCenter + (Math.floor(stepsPerVisible / 2) + rightExtraSteps) * step;
+
+        // scene.remove(this.bounbaryLine);
+        // const bounbaryLine = new Line({ x: Math.floor(leftBoundaryXnormalized), y: 5 }, { x: rightBoundaryXnormalized, y: 5 });
+        // this.bounbaryLine = bounbaryLine;
+        // scene.add(bounbaryLine);
+
+        const functionCords: number[][] = [];
+
+        let currentX = leftBoundaryXnormalized;
+        while (currentX <= rightBoundaryXnormalized) {
+            const x = currentX;
             const y = this.formula(x);
 
-            if (prevX !== null && prevY !== null) {
-                const line = new Line({ x: prevX, y: prevY }, { x, y }, 1, this.color, true);
-                this.lineSegments.push(line);
-                scene.add(line);
+            functionCords.push([x, y]);
+
+            currentX += step;
+        }
+
+        for (let i = 0; i < this.functionLines.length; i++) {
+            const line = this.functionLines[i];
+
+            // const isTooDistant = (Math.abs(functionCords[i][1] - functionCords[i+1][1]) > (500 / scene.camera.zoom));
+            const isTooDistant = false;
+
+            if (isTooDistant) {
+                this.functionLines[i].point1.x = 0;
+                this.functionLines[i].point1.y = 0;
+                this.functionLines[i].point2.x = 0;
+                this.functionLines[i].point2.y = 0;
+                continue ;
             }
-            prevX = x;
-            prevY = y;
+
+            this.functionLines[i].point1.x = functionCords[i][0];
+            this.functionLines[i].point1.y = functionCords[i][1];
+            this.functionLines[i].point2.x = functionCords[i+1][0];
+            this.functionLines[i].point2.y = functionCords[i+1][1];
         }
     }
 }

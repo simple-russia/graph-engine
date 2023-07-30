@@ -2,6 +2,7 @@ import type { point2D } from "../types";
 import { Scene } from "../scene";
 import { Object2D } from "./object2d";
 import { color } from "../../utils/color";
+import { COLORS } from "../../utils/colors";
 
 
 

@@ -1,6 +1,7 @@
 import { color } from "../utils/color";
 import { Object2D } from "./basicObjects/object2d";
 import { Camera } from "./camera";
+import { EventHandler } from "./events/eventsHandler";
 
 export class Scene {
     public canvas: HTMLCanvasElement;
@@ -15,7 +16,9 @@ export class Scene {
 
     public children: Object2D[];
 
-    public onRender?: () => void;
+    private currentFramesCount = 0;
+
+    public eventHandler: EventHandler;
 
 
     constructor (rootElement: Element) {
@@ -37,6 +40,9 @@ export class Scene {
         rootElement.appendChild(canvas);
 
         this.preventContextMenu();
+        this.fpsMeasure();
+
+        this.eventHandler = new EventHandler(["render", "fpsUpdate"]);
     }
 
 
@@ -91,10 +97,17 @@ export class Scene {
         this.children.forEach(object2d => {
             object2d.render(this);
         });
+
+        this.currentFramesCount += 1;
+
+        this.eventHandler.emit("render");
     }
 
     add (object2d: Object2D) {
         this.children.push(object2d);
+        if (object2d.onAddedToScene) {
+            object2d.onAddedToScene(this);
+        }
     }
 
     remove (object2d: Object2D) {
@@ -103,5 +116,13 @@ export class Scene {
 
     private preventContextMenu () {
         this.canvas.addEventListener("contextmenu", e => e.preventDefault());
+    }
+
+    private fpsMeasure () {
+        setInterval(() => {
+            this.eventHandler.emit("fpsUpdate", this.currentFramesCount);
+
+            this.currentFramesCount = 0;
+        }, 1000);
     }
 }
