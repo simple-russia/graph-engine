@@ -12,5 +12,7 @@ export abstract class Object2D {
 
     public onAddedToScene?(scene: Scene): void;
 
+    public onRemovedFromScene?(scene: Scene): void;
+
     abstract render (scene: Scene): void;
 }

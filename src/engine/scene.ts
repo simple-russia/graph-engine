@@ -112,11 +112,15 @@ export class Scene {
             object2d.onAddedToScene(this);
         }
 
-        this.children.sort();
+        // this.children.sort();
     }
 
     remove (object2d: Object2D) {
         this.children = this.children.filter(obj => obj !== object2d);
+
+        if (object2d.onRemovedFromScene) {
+            object2d.onRemovedFromScene(this);
+        }
     }
 
     private preventContextMenu () {

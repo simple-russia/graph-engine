@@ -1,7 +1,8 @@
+import { Scene } from "./scene";
 import { point2D } from "./types";
 
 
-const DEFAULT_ZOOM_STEP = 0.8;
+const DEFAULT_ZOOM_STEP = 0.97;
 const MAX_ZOOM = 1000;
 const MIN_ZOOM = 0.001;
 
@@ -44,11 +45,23 @@ export class Camera {
         this.__realZoom = newZoom;
     }
 
-    public zoomIn() {
-        this.zoom = this.zoom * DEFAULT_ZOOM_STEP;
+    public zoomIn(value=DEFAULT_ZOOM_STEP) {
+        this.zoom = this.zoom * value;
     }
 
-    public zoomOut() {
-        this.zoom = this.zoom / DEFAULT_ZOOM_STEP;
+    public zoomOut(value=DEFAULT_ZOOM_STEP) {
+        this.zoom = this.zoom / value;
+    }
+
+    public getVisibleBoundaries (scene: Scene) {
+        const centerX = this.position.x;
+        const centerY = this.position.y;
+
+        return {
+            leftBoundary: centerX - (scene.width / 2) * this.zoom,
+            rightBoundary: centerX + (scene.width / 2) * this.zoom,
+            topBoundary: centerY + (scene.height / 2) * this.zoom,
+            bottomBoundary: centerY - (scene.height / 2) * this.zoom,
+        };
     }
 }

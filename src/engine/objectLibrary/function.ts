@@ -25,13 +25,17 @@ export class MathFunction extends Object2D {
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, 1, color, true));
+        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, ignoreZoom: true }));
     }
 
     public onAddedToScene(scene: Scene): void {
         this.functionLines.forEach(line => {
             scene.add(line);
         });
+    }
+
+    public onRemovedFromScene(scene: Scene): void {
+        this.functionLines.forEach(line => scene.remove(line));
     }
 
     render (scene: Scene) {
@@ -43,11 +47,6 @@ export class MathFunction extends Object2D {
         let normalizedCenter = center - center % step;
         let leftBoundaryXnormalized = normalizedCenter - (Math.floor(stepsPerVisible / 2) + leftExtraSteps) * step;
         let rightBoundaryXnormalized = normalizedCenter + (Math.floor(stepsPerVisible / 2) + rightExtraSteps) * step;
-
-        // scene.remove(this.bounbaryLine);
-        // const bounbaryLine = new Line({ x: Math.floor(leftBoundaryXnormalized), y: 5 }, { x: rightBoundaryXnormalized, y: 5 });
-        // this.bounbaryLine = bounbaryLine;
-        // scene.add(bounbaryLine);
 
         const functionCords: number[][] = [];
 
@@ -64,7 +63,6 @@ export class MathFunction extends Object2D {
         for (let i = 0; i < this.functionLines.length; i++) {
             const line = this.functionLines[i];
 
-            // const isTooDistant = (Math.abs(functionCords[i][1] - functionCords[i+1][1]) > (500 / scene.camera.zoom));
             const isTooDistant = false;
 
             if (isTooDistant) {
