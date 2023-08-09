@@ -19,14 +19,16 @@ export class MathFunction extends Object2D {
 
     private bounbaryLine: Line;
 
+
     constructor (formula: (x: number) => number, color=0xFF0000) {
         super();
 
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, ignoreZoom: true }));
+        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true }));
     }
+
 
     public onAddedToScene(scene: Scene): void {
         this.functionLines.forEach(line => {

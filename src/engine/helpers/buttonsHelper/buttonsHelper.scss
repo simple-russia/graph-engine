@@ -1,0 +1,36 @@
+.buttonHelper__buttonContainer {
+    background-color: rgb(6, 5, 5);
+    padding: 3px;
+    display: grid;
+    gap: 5px;
+    position: absolute;
+    font-size: 14px;
+    top: 8px;
+    right: 8px;
+    font-family: monospace;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttonHelper__buttonContainer_button {
+    background-color: red;
+    width: 26px;
+    height: 28px;
+    color: #a1a1a1;
+    background: #494949;
+    border: none;
+    font-family: monospace;
+    cursor: pointer;
+    border-radius: 2px;
+    border: 1px solid rgb(102, 102, 102);
+    background-image: linear-gradient(transparent, rgb(81, 72, 72));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonHelper__buttonContainer_button:hover {
+    filter: brightness(1.1);
+    background-image: linear-gradient(180deg, transparent, rgb(96, 92, 92));
+}

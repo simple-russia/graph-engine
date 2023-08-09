@@ -52,7 +52,7 @@ export class Scene {
         const frame_time = 1000 / this.maxFps;
 
         this.renderIntervalId = window.setInterval(() => {
-            this.render();
+            queueMicrotask(this.render.bind(this));
         }, frame_time);
 
         this.isRunning = true;

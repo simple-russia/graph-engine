@@ -24,20 +24,22 @@ export class CameraControls {
 
     constructor (scene: Scene) {
         this.scene = scene;
-        this.mouseDragButton = MouseButtons.RIGHT;
+        this.mouseDragButton = MouseButtons.LEFT;
 
         this.startWheelZoom();
         this.startMouseDrag();
 
-        this.eventHandler = new EventHandler(["dragStart", "dragEnd"]);
+        this.eventHandler = new EventHandler(["dragStart", "dragEnd", "zoomIn", "zoomOut", "drag"]);
     }
 
 
     private startWheelZoom () {
         this.onWheel = (e: WheelEvent) => {
             if (e.deltaY > 0) {
+                this.eventHandler.emit("zoomOut");
                 this.scene.camera.zoomOut();
             } else {
+                this.eventHandler.emit("zoomIn");
                 this.scene.camera.zoomIn();
             }
         };
@@ -66,6 +68,8 @@ export class CameraControls {
 
                 camera.translateX(-e.movementX * camera.zoom);
                 camera.translateY(e.movementY * camera.zoom);
+
+                this.eventHandler.emit("drag");
             }
         };
 

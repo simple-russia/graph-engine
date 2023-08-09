@@ -11,7 +11,7 @@ export class FPSHelper {
     constructor (scene: Scene) {
         const fpsBlock = document.createElement("div");
         this.fpsBlock = fpsBlock;
-        fpsBlock.setAttribute("style", "position: absolute; font-size: 14px; top: 0px; left: 2px; font-family: monospace; color: #00FF00;");
+        fpsBlock.setAttribute("style", "position: absolute; font-size: 14px; top: 0px; left: 2px; font-family: monospace; color: #00FF00; user-select: none");
         fpsBlock.id = HELPER_ELEMENT_ID;
 
         const currentFPS = document.createElement("div");
