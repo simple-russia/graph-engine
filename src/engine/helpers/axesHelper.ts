@@ -1,9 +1,10 @@
 import { COLORS } from "../../utils/colors";
 import { restrictNumber } from "../../utils/restrictNumber";
-import { Line } from "../basicObjects/line";
+import { StraightLine } from "../objectLibrary/straightLine";
 import { Object2D } from "../basicObjects/object2d";
 import { Text } from "../basicObjects/text";
 import { Scene } from "../scene";
+import { BoundingBox } from "../basicObjects/types";
 
 
 const yLabelOffset = 10;
@@ -60,17 +61,17 @@ const isZero = (n: number) => {
 
 
 export class AxesHelper extends Object2D {
-    private xAxis: Line;
-    private yAxis: Line;
+    private xAxis: StraightLine;
+    private yAxis: StraightLine;
 
     private xLabels: Text[];
     private yLabels: Text[];
 
-    private gridVerticalLines: Line[];
-    private gridHorizontalLines: Line[];
+    private gridVerticalLines: StraightLine[];
+    private gridHorizontalLines: StraightLine[];
 
-    private gridSecondaryVerticalLines: Line[];
-    private gridSecondaryHorizontalLines: Line[];
+    private gridSecondaryVerticalLines: StraightLine[];
+    private gridSecondaryHorizontalLines: StraightLine[];
 
     public renderPriority: number = -1;
 
@@ -78,17 +79,17 @@ export class AxesHelper extends Object2D {
     constructor () {
         super();
 
-        this.xAxis = new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 0.5 });
-        this.yAxis = new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 1 });
+        this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 0.5 });
+        this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 1 });
 
         this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true));
         this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true));
 
-        this.gridVerticalLines = Array(maxXSteps).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
-        this.gridHorizontalLines = Array(maxXSteps).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
+        this.gridVerticalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
+        this.gridHorizontalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
 
-        this.gridSecondaryVerticalLines = Array(maxXSteps * 5).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
-        this.gridSecondaryHorizontalLines = Array(maxXSteps * 5).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
+        this.gridSecondaryVerticalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
+        this.gridSecondaryHorizontalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
     }
 
 
@@ -113,16 +114,23 @@ export class AxesHelper extends Object2D {
 
         for (const grid of [this.gridVerticalLines, this.gridSecondaryHorizontalLines, this.gridSecondaryVerticalLines, this.gridHorizontalLines]) {
             grid.forEach(axis => {
-                axis.point1.y = 0;
-                axis.point1.x = 0;
-                axis.point2.y = 0;
-                axis.point2.x = 0;
+                axis.points[0].y = 0;
+                axis.points[0].x = 0;
+                axis.points[1].y = 0;
+                axis.points[1].x = 0;
             });
         }
     }
 
 
+    getBoundingBox(): BoundingBox {
+        return null;
+    }
+
+
     render (scene: Scene) {
+        // TODO fix this using new canvas point methods
+
         // First hide all the axes and labels, then compute them again.
         this.hideLabelsAndGrid();
 
@@ -132,10 +140,10 @@ export class AxesHelper extends Object2D {
         // const height = bounds.topBoundary - bounds.bottomBoundary;
 
         // Axes points
-        this.xAxis.point1.x = bounds.leftBoundary;
-        this.xAxis.point2.x = bounds.rightBoundary;
-        this.yAxis.point1.y = bounds.topBoundary;
-        this.yAxis.point2.y = bounds.bottomBoundary;
+        this.xAxis.points[0].x = bounds.leftBoundary;
+        this.xAxis.points[1].x = bounds.rightBoundary;
+        this.yAxis.points[0].y = bounds.topBoundary;
+        this.yAxis.points[1].y = bounds.bottomBoundary;
 
         // What step to use for labels
         const [step, secondaryStep, secondaryOpacity] = getClosestPrettyStep(width);
@@ -167,10 +175,10 @@ export class AxesHelper extends Object2D {
 
             // Add a vertical line
             const verticalLine = this.gridVerticalLines[i_1];
-            verticalLine.point1.y = bounds.bottomBoundary;
-            verticalLine.point2.y = bounds.topBoundary;
-            verticalLine.point1.x = label.position.x;
-            verticalLine.point2.x = label.position.x;
+            verticalLine.points[0].y = bounds.bottomBoundary;
+            verticalLine.points[1].y = bounds.topBoundary;
+            verticalLine.points[0].x = label.position.x;
+            verticalLine.points[1].x = label.position.x;
         }
 
         let i_2: number;
@@ -179,10 +187,10 @@ export class AxesHelper extends Object2D {
             const x = xStart + i_2 * secondaryStep;
 
             const verticalSecondaryLine = this.gridSecondaryVerticalLines[i_2];
-            verticalSecondaryLine.point1.y = bounds.bottomBoundary;
-            verticalSecondaryLine.point2.y = bounds.topBoundary;
-            verticalSecondaryLine.point1.x = x;
-            verticalSecondaryLine.point2.x = x;
+            verticalSecondaryLine.points[0].y = bounds.bottomBoundary;
+            verticalSecondaryLine.points[1].y = bounds.topBoundary;
+            verticalSecondaryLine.points[0].x = x;
+            verticalSecondaryLine.points[1].x = x;
             verticalSecondaryLine.opacity = secondaryOpacity * secondaryGridAdditionalOpacity;
         }
 
@@ -205,10 +213,10 @@ export class AxesHelper extends Object2D {
 
             // Add a vertical line
             const horizontal = this.gridHorizontalLines[j];
-            horizontal.point1.y = label.position.y;
-            horizontal.point2.y = label.position.y;
-            horizontal.point1.x = bounds.leftBoundary;
-            horizontal.point2.x = bounds.rightBoundary;
+            horizontal.points[0].y = label.position.y;
+            horizontal.points[1].y = label.position.y;
+            horizontal.points[0].x = bounds.leftBoundary;
+            horizontal.points[1].x = bounds.rightBoundary;
         }
 
 
@@ -219,10 +227,10 @@ export class AxesHelper extends Object2D {
 
             const horizontalVerticalLine = this.gridSecondaryHorizontalLines[j_2];
 
-            horizontalVerticalLine.point1.y = y;
-            horizontalVerticalLine.point2.y = y;
-            horizontalVerticalLine.point1.x = bounds.leftBoundary;
-            horizontalVerticalLine.point2.x = bounds.rightBoundary;
+            horizontalVerticalLine.points[0].y = y;
+            horizontalVerticalLine.points[1].y = y;
+            horizontalVerticalLine.points[0].x = bounds.leftBoundary;
+            horizontalVerticalLine.points[1].x = bounds.rightBoundary;
             horizontalVerticalLine.opacity = secondaryOpacity * secondaryGridAdditionalOpacity;
         }
     }

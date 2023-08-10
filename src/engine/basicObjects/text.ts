@@ -2,6 +2,7 @@ import type { point2D } from "../types";
 import { Scene } from "../scene";
 import { Object2D } from "./object2d";
 import { color } from "../../utils/color";
+import { BoundingBox } from "./types";
 
 
 
@@ -22,6 +23,11 @@ export class Text extends Object2D {
         this.ignoreZoom = ignoreZoom;
     }
 
+
+    getBoundingBox(): BoundingBox {
+        return null;
+    }
+
     render (scene: Scene) {
         const ctx = scene.canvas.getContext("2d");
         const camera = scene.camera;
@@ -35,8 +41,6 @@ export class Text extends Object2D {
         const textPos = { ...this.position };
 
         textPos.y *= -1;
-
-        // textPos.x = textPos.x - (ctx.measureText(this.text).width / 2) * camera.zoom;
 
         textPos.x = textPos.x * 1 / camera.zoom;
         textPos.y = textPos.y * 1 / camera.zoom;

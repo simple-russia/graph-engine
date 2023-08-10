@@ -1,6 +1,7 @@
-import { Line } from "../basicObjects/line";
+import { StraightLine } from "./straightLine";
 import { Object2D } from "../basicObjects/object2d";
 import { Scene } from "../scene";
+import { BoundingBox } from "../basicObjects/types";
 
 const stepsPerVisible = 1000;
 const leftExtraSteps = -2;
@@ -15,9 +16,9 @@ export class MathFunction extends Object2D {
     public toX: number;
     public step: number;
     public color: number;
-    private functionLines: Line[];
+    private functionLines: StraightLine[];
 
-    private bounbaryLine: Line;
+    private bounbaryLine: StraightLine;
 
 
     constructor (formula: (x: number) => number, color=0xFF0000) {
@@ -26,7 +27,7 @@ export class MathFunction extends Object2D {
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new Line({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true }));
+        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true }));
     }
 
 
@@ -38,6 +39,10 @@ export class MathFunction extends Object2D {
 
     public onRemovedFromScene(scene: Scene): void {
         this.functionLines.forEach(line => scene.remove(line));
+    }
+
+    getBoundingBox(): BoundingBox {
+        return null;
     }
 
     render (scene: Scene) {
@@ -60,25 +65,6 @@ export class MathFunction extends Object2D {
             functionCords.push([x, y]);
 
             currentX += step;
-        }
-
-        for (let i = 0; i < this.functionLines.length; i++) {
-            const line = this.functionLines[i];
-
-            const isTooDistant = false;
-
-            if (isTooDistant) {
-                this.functionLines[i].point1.x = 0;
-                this.functionLines[i].point1.y = 0;
-                this.functionLines[i].point2.x = 0;
-                this.functionLines[i].point2.y = 0;
-                continue ;
-            }
-
-            this.functionLines[i].point1.x = functionCords[i][0];
-            this.functionLines[i].point1.y = functionCords[i][1];
-            this.functionLines[i].point2.x = functionCords[i+1][0];
-            this.functionLines[i].point2.y = functionCords[i+1][1];
         }
     }
 }

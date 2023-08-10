@@ -14,6 +14,7 @@ export class Scene {
 
     private maxFps = 30;
     private renderIntervalId: number;
+    private objectsRendered = 0;
 
     public children: Object2D[];
 
@@ -34,7 +35,9 @@ export class Scene {
         this.canvas = canvas;
         this.width = rootWidth;
         this.height = rootHeight;
+
         this.camera = new Camera();
+        this.camera.scene = this;
 
         this.children = [];
 
@@ -89,6 +92,7 @@ export class Scene {
     render () {
         const ctx = this.canvas.getContext("2d");
         ctx.clearRect(0, 0, this.width, this.height);
+        let objectsRendered = 0;
 
         const fillStyle = color(this.bgColor);
         ctx.fillStyle = fillStyle;
@@ -96,11 +100,14 @@ export class Scene {
 
 
         this.children.forEach(object2d => {
-            object2d.render(this);
+            if (this.objectSeen(object2d)) {
+                object2d.render(this);
+                objectsRendered++;
+            }
         });
 
         this.currentFramesCount += 1;
-
+        this.objectsRendered = objectsRendered;
         this.eventHandler.emit("render");
     }
 
@@ -113,7 +120,6 @@ export class Scene {
             object2d.onAddedToScene(this);
         }
 
-        // this.children.sort();
     }
 
     remove (object2d: Object2D) {
@@ -130,7 +136,7 @@ export class Scene {
 
     private fpsMeasure () {
         setInterval(() => {
-            this.eventHandler.emit("fpsUpdate", this.currentFramesCount);
+            this.eventHandler.emit("fpsUpdate", { fps: this.currentFramesCount, obj: this.objectsRendered });
 
             this.currentFramesCount = 0;
         }, 1000);
@@ -156,5 +162,34 @@ export class Scene {
             x: pointX,
             y: pointY,
         };
+    }
+
+    getLineWidth (lineWidth: number, ignoreZoom = false) {
+        if (ignoreZoom) {
+            return lineWidth;
+        }
+
+        return lineWidth / this.camera.zoom;
+    }
+
+
+    objectSeen (object: Object2D) {
+        const boundingBox = object.getBoundingBox();
+        const viewBox = this.camera.getViewBoundingBox();
+
+        if (boundingBox === undefined || boundingBox === null) {
+            return true;
+        }
+
+        if (!viewBox || boundingBox.max.x < viewBox.min.x || boundingBox.min.x > viewBox.max.x) {
+            // console.log(boundingBox.min.x, boundingBox.max.x);
+            return false;
+        }
+
+        if (boundingBox.max.y < viewBox.min.y || boundingBox.min.y > viewBox.max.y) {
+            return false ;
+        }
+
+        return true;
     }
 }

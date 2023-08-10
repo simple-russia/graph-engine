@@ -1,6 +1,5 @@
 import { myCustomButtonsHelper } from "./buttons";
-import { Line } from "./engine/basicObjects/line";
-import { PolylinePrimitive } from "./engine/basicObjects/polylinePrimitive/polylinePrimitive";
+import { StraightLine } from "./engine/objectLibrary/straightLine";
 import { Text } from "./engine/basicObjects/text";
 import { AxesHelper } from "./engine/helpers/axesHelper";
 import { CameraControls } from "./engine/helpers/cameraControls";
@@ -14,7 +13,7 @@ import { COLORS } from "./utils/colors";
 // Creation and basic configuratiob
 const root = document.querySelector("#root")!;
 const scene = new Scene(root);
-scene.fps = 60;
+scene.fps = 100;
 scene.bgColor = 0x000000;
 
 // Camera controls
@@ -31,9 +30,9 @@ myCustomButtonsHelper(scene, cameraControls);
 scene.start();
 
 // Functions
-scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
-scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
-scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
+// scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
+// scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
+// scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
 
 // Fun texts
 scene.add(new Text("Made by Danya (simple.alex)", { x: 100, y: 200 }, 16, COLORS.RED));
@@ -61,10 +60,10 @@ scene.add(new Text("Now press HA to get back:)", { x: 0.01, y: -0.01 }, .002, CO
 
 
 // About
-scene.add(new Line({ x: -450, y: 320 }, { x: -90, y: 320 }, { color: COLORS.GREEN }));
-scene.add(new Line({ x: -90, y: 320 }, { x: -90, y: 70 }, { color: COLORS.GREEN }));
-scene.add(new Line({ x: -90, y: 70 }, { x: -450, y: 70 }, { color: COLORS.GREEN }));
-scene.add(new Line({ x: -450, y: 70 }, { x: -450, y: 320 }, { color: COLORS.GREEN }));
+scene.add(new StraightLine({ x: -450, y: 320 }, { x: -90, y: 320 }, { color: COLORS.GREEN }));
+scene.add(new StraightLine({ x: -90, y: 320 }, { x: -90, y: 70 }, { color: COLORS.GREEN }));
+scene.add(new StraightLine({ x: -90, y: 70 }, { x: -450, y: 70 }, { color: COLORS.GREEN }));
+scene.add(new StraightLine({ x: -450, y: 70 }, { x: -450, y: 320 }, { color: COLORS.GREEN }));
 
 scene.add(new Text("danya.js", { x: -440, y: 300 }, 20, COLORS.YELLOW));
 scene.add(new Text("Hey there! This is Danya's new", { x: -440, y: 275 }, 20, COLORS.WHITE));
@@ -78,34 +77,23 @@ scene.add(new Text("the source code here below:", { x: -440, y: 100 }, 20, COLOR
 scene.add(new Text("https://github.com/simple...", { x: -440, y: 75 }, 20, 0x5555FF));
 
 
-// scene.add(new PolylinePrimitive({
-//     points: [
-//         { x: 10, y: 10, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
-//         { x: 120, y: 120, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
-//         { x: 120, y: 320, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
-//         { x: 220, y: 300, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
-//         { x: 320, y: 400, cp1x: 250, cp1y: 100, cp2x: 450, cp2y: 50 },
-//     ],
-//     bgColor: 0x00FF00,
-// }));
-
-
 scene.add(new Square({ bgColor: COLORS.WHITE, height: 20, width: 100, position: { x: 110, y: -60 } }));
 scene.add(new Square({ bgColor: COLORS.BLUE, height: 20, width: 100, position: { x: 110, y: -80 } }));
 scene.add(new Square({ bgColor: COLORS.RED, height: 20, width: 100, position: { x: 110, y: -100 } }));
 
-scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: { x: -100, y: -100 } }));
-scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
+// scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: { x: -100, y: -100 } }));
+// scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
 scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius: 50 }));
 
 scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
+
 for (let i = 0; i < 5000; i++) {
     const pos = {
-        x: 100 + Math.random() * 4900,
-        y: 100 + Math.random() * 4900,
+        x: 100 + Math.random() * 44900,
+        y: 100 + Math.random() * 44900,
     };
-    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos }));
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos, strokeColor: Math.floor(0xFFFFFF * Math.random()) }));
 }
 
 

@@ -1,4 +1,5 @@
 import { PolylinePrimitive } from "../basicObjects/polylinePrimitive/polylinePrimitive";
+import { BoundingBox } from "../basicObjects/types";
 import { Scene } from "../scene";
 import { point2D } from "../types";
 
@@ -32,7 +33,7 @@ export class Square extends PolylinePrimitive {
             bgColor: options.bgColor,
             strokeColor: options.strokeColor,
             ignoreZoom: false,
-            lineWidth: 1,
+            lineWidth: 6,
             points: [
                 { x: options.position.x - options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
                 { x: options.position.x + options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
@@ -54,5 +55,9 @@ export class Square extends PolylinePrimitive {
 
     render (scene: Scene) {
         super.render(scene);
+    }
+
+    getBoundingBox () {
+        return super.getBoundingBox();
     }
 }

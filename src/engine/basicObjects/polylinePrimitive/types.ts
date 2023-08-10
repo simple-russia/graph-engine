@@ -1,7 +1,9 @@
 export interface IPolylinePrimitiveArgs {
     lineWidth: number
     bgColor: number | null
+    bgOpacity: number
     strokeColor: number | null
+    strokeOpacity: number
     points: PolylinePrimitivePoint[]
     ignoreZoom: boolean
 }

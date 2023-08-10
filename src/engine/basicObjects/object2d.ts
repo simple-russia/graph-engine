@@ -1,5 +1,8 @@
 import { generateUUID } from "../../utils/uuid";
 import { Scene } from "../scene";
+import { BoundingBox } from "./types";
+
+
 
 export abstract class Object2D {
     public id: string;
@@ -15,4 +18,6 @@ export abstract class Object2D {
     public onRemovedFromScene?(scene: Scene): void;
 
     abstract render (scene: Scene): void;
+
+    public getBoundingBox?(): BoundingBox
 }

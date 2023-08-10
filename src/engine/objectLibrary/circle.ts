@@ -30,6 +30,8 @@ export class Circle extends PolylinePrimitive {
         const y = options.position.y;
         const r = options.radius;
 
+        const C = 1.02;
+
         super({
             bgColor: options.bgColor,
             strokeColor: options.strokeColor,
@@ -37,10 +39,10 @@ export class Circle extends PolylinePrimitive {
             lineWidth: 1,
             points: [
                 { x: options.position.x - options.radius, y: options.position.y, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
-                { x: options.position.x, y: options.position.y - options.radius, cp1x: x - r, cp1y: y - r/2, cp2x: x - r/2, cp2y: y - r },
-                { x: options.position.x + options.radius, y: options.position.y, cp1x: x + r/2, cp1y: y - r, cp2x: x + r, cp2y: y - r/2 },
-                { x: options.position.x, y: options.position.y + options.radius, cp1x: x + r, cp1y: y + r/2, cp2x: x + r/2, cp2y: y + r },
-                { x: options.position.x - options.radius, y: options.position.y, cp1x: x - r/2, cp1y: y + r, cp2x: x - r, cp2y: y + r/2 },
+                { x: options.position.x, y: options.position.y - options.radius, cp1x: x - (r*C) , cp1y: y - (r*C)/2, cp2x: x - (r*C)/2, cp2y: y - (r*C) },
+                { x: options.position.x + options.radius, y: options.position.y, cp1x: x + (r*C)/2, cp1y: y - (r*C), cp2x: x + (r*C), cp2y: y - (r*C)/2 },
+                { x: options.position.x, y: options.position.y + options.radius, cp1x: x + (r*C), cp1y: y + (r*C)/2, cp2x: x + (r*C)/2, cp2y: y + (r*C) },
+                { x: options.position.x - options.radius, y: options.position.y, cp1x: x - (r*C)/2, cp1y: y + (r*C), cp2x: x - (r*C), cp2y: y + (r*C)/2 },
             ],
         });
     }
