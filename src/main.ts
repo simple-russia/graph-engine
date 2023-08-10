@@ -1,10 +1,13 @@
 import { myCustomButtonsHelper } from "./buttons";
 import { Line } from "./engine/basicObjects/line";
+import { PolylinePrimitive } from "./engine/basicObjects/polylinePrimitive/polylinePrimitive";
 import { Text } from "./engine/basicObjects/text";
 import { AxesHelper } from "./engine/helpers/axesHelper";
 import { CameraControls } from "./engine/helpers/cameraControls";
 import { FPSHelper } from "./engine/helpers/fpsHelper";
+import { Circle } from "./engine/objectLibrary/circle";
 import { MathFunction } from "./engine/objectLibrary/function";
+import { Square } from "./engine/objectLibrary/square";
 import { Scene } from "./engine/scene";
 import { COLORS } from "./utils/colors";
 
@@ -73,6 +76,39 @@ scene.add(new Text("as well as add new features and", { x: -440, y: 150 }, 20, C
 scene.add(new Text("perfomance optimizations. You can", { x: -440, y: 125 }, 20, COLORS.WHITE));
 scene.add(new Text("the source code here below:", { x: -440, y: 100 }, 20, COLORS.WHITE));
 scene.add(new Text("https://github.com/simple...", { x: -440, y: 75 }, 20, 0x5555FF));
+
+
+// scene.add(new PolylinePrimitive({
+//     points: [
+//         { x: 10, y: 10, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+//         { x: 120, y: 120, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+//         { x: 120, y: 320, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+//         { x: 220, y: 300, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+//         { x: 320, y: 400, cp1x: 250, cp1y: 100, cp2x: 450, cp2y: 50 },
+//     ],
+//     bgColor: 0x00FF00,
+// }));
+
+
+scene.add(new Square({ bgColor: COLORS.WHITE, height: 20, width: 100, position: { x: 110, y: -60 } }));
+scene.add(new Square({ bgColor: COLORS.BLUE, height: 20, width: 100, position: { x: 110, y: -80 } }));
+scene.add(new Square({ bgColor: COLORS.RED, height: 20, width: 100, position: { x: 110, y: -100 } }));
+
+scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: { x: -100, y: -100 } }));
+scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
+scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius: 50 }));
+
+scene.add(new Text("You're the only one i want, my and only my cheska <3 We are one", { x: 180, y: -200 }, 30, COLORS.WHITE));
+
+for (let i = 0; i < 5000; i++) {
+    const pos = {
+        x: 100 + Math.random() * 4900,
+        y: 100 + Math.random() * 4900,
+    };
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos }));
+}
+
+
 
 const changingText = new Text("", { x: -400, y: 35 }, 20, COLORS.WHITE);
 const percents = new Text("", { x: -450, y: 35 }, 20, COLORS.WHITE);

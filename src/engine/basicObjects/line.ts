@@ -47,26 +47,8 @@ export class Line extends Object2D {
         ctx.lineWidth = this.lineWidth * (this.ignoreZoom ? 1 : 1 / camera.zoom);
         ctx.strokeStyle = color(this.color, this.opacity);
 
-        const p1: point2D = { ...this.point1 };
-        const p2: point2D = { ...this.point2 };
-
-        p1.y *= -1;
-        p2.y *= -1;
-
-        p1.x *= 1 / camera.zoom;
-        p1.y *= 1 / camera.zoom;
-        p2.x *= 1 / camera.zoom;
-        p2.y *= 1 / camera.zoom;
-
-        p1.x += scene.width / 2;
-        p1.y += scene.height / 2;
-        p2.x += scene.width / 2;
-        p2.y += scene.height / 2;
-
-        p1.x += -scene.camera.position.x * 1 / camera.zoom;
-        p1.y += scene.camera.position.y * 1 / camera.zoom;
-        p2.x += -scene.camera.position.x * 1 / camera.zoom;
-        p2.y += scene.camera.position.y * 1 / camera.zoom;
+        const p1: point2D = scene.map2DPointToCanvas({ ...this.point1 });
+        const p2: point2D = scene.map2DPointToCanvas({ ...this.point2 });
 
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);

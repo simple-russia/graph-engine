@@ -2,6 +2,7 @@ import { color } from "../utils/color";
 import { Object2D } from "./basicObjects/object2d";
 import { Camera } from "./camera";
 import { EventHandler } from "./events/eventsHandler";
+import { point2D } from "./types";
 
 export class Scene {
     public canvas: HTMLCanvasElement;
@@ -133,5 +134,27 @@ export class Scene {
 
             this.currentFramesCount = 0;
         }, 1000);
+    }
+
+
+    map2DPointToCanvas (point: point2D): point2D {
+        let pointX = point.x;
+        let pointY = point.y;
+
+        pointY *= -1;
+
+        pointX = pointX / this.camera.zoom;
+        pointY = pointY / this.camera.zoom;
+
+        pointX += this.width / 2;
+        pointY += this.height / 2;
+
+        pointX += -this.camera.position.x / this.camera.zoom;
+        pointY += this.camera.position.y / this.camera.zoom;
+
+        return {
+            x: pointX,
+            y: pointY,
+        };
     }
 }
