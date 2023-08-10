@@ -98,7 +98,7 @@ scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: 
 scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
 scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius: 50 }));
 
-scene.add(new Text("You're the only one i want, my and only my cheska <3 We are one", { x: 180, y: -200 }, 30, COLORS.WHITE));
+scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
 for (let i = 0; i < 5000; i++) {
     const pos = {
