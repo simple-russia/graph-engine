@@ -1,5 +1,4 @@
 import { PolylinePrimitive } from "../basicObjects/polylinePrimitive/polylinePrimitive";
-import { BoundingBox } from "../basicObjects/types";
 import { Scene } from "../scene/scene";
 import { point2D } from "../types";
 
@@ -11,6 +10,7 @@ interface ISquareArgs {
     position: point2D
     bgColor: number | null
     strokeColor: number | null
+    lineWidth: number
 }
 
 const SQUARE_DEFAULT_OPTIONS: ISquareArgs = {
@@ -18,6 +18,7 @@ const SQUARE_DEFAULT_OPTIONS: ISquareArgs = {
     height: 10,
     bgColor: null,
     strokeColor: null,
+    lineWidth: 1,
     position: { x: 0, y: 0 }
 };
 
@@ -33,7 +34,7 @@ export class Square extends PolylinePrimitive {
             bgColor: options.bgColor,
             strokeColor: options.strokeColor,
             ignoreZoom: false,
-            lineWidth: 6,
+            lineWidth: options.lineWidth,
             points: [
                 { x: options.position.x - options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
                 { x: options.position.x + options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },

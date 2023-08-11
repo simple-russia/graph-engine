@@ -90,10 +90,26 @@ scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
 for (let i = 0; i < 100_000; i++) {
     const pos = {
-        x: 100 + Math.random() * 144900,
-        y: 100 + Math.random() * 144900,
+        x: 100 + Math.random() * 1244900,
+        y: 100 + Math.random() * 1244900,
     };
-    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos, strokeColor: 0xFF0000 }));
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random()*1300 + 10, width: Math.random()*2100 + 10, lineWidth: 4, position: pos, strokeColor: 0xFF0000 }));
+}
+
+for (let i = 0; i < 30_000; i++) {
+    const pos = {
+        x: 1000 + Math.random() * 1244900,
+        y: 100 + Math.random() * 1244900,
+    };
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 1700 + 1000, width: Math.random() * 2100 + 1000, lineWidth: 24, position: pos, strokeColor: 0xFF0000 }));
+}
+
+for (let i = 0; i < 3_000; i++) {
+    const pos = {
+        x: 10000 + Math.random() * 1244900,
+        y: 10000 + Math.random() * 1244900,
+    };
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 25000 + 4000, width: Math.random() * 25000 + 4000, lineWidth: 240, position: pos, strokeColor: 0xFF0000 }));
 }
 
 

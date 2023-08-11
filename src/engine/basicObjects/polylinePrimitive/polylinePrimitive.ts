@@ -29,7 +29,6 @@ export class PolylinePrimitive extends Object2D {
     public ignoreZoom: boolean;
 
     private boundingBox: BoundingBox;
-    // private isObjectTooSmall: boolean;
 
 
     constructor(options: Partial<IPolylinePrimitiveArgs> = {}) {
@@ -75,6 +74,11 @@ export class PolylinePrimitive extends Object2D {
 
         if (this.points.length === 0) {
             // Nothing to draw
+            return ;
+        }
+
+        if (ratioToPixel < SMALL_POINT_MIN_PIXEL_SIZE) {
+            // The object is way too small to draw
             return ;
         }
 
@@ -131,8 +135,6 @@ export class PolylinePrimitive extends Object2D {
 
             // The smaller it is the less transparent it's going to be untill it's not rendered at all
             const opacity = (ratioToPixel - SMALL_POINT_MIN_PIXEL_SIZE) / (SMALL_POINT_MAX_PIXEL_SIZE - SMALL_POINT_MIN_PIXEL_SIZE);
-
-            console.log("aaa");
 
             ctx.fillStyle = color(this.bgColor, opacity);
             ctx.fillRect(p1.x, p1.y, width, height);
