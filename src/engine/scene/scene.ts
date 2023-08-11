@@ -1,8 +1,14 @@
-import { color } from "../utils/color";
-import { Object2D } from "./basicObjects/object2d";
-import { Camera } from "./camera";
-import { EventHandler } from "./events/eventsHandler";
-import { point2D } from "./types";
+import { color } from "../../utils/color";
+import { Object2D } from "../basicObjects/object2d";
+import { Camera } from "../camera";
+import { EventHandler } from "../events/eventsHandler";
+import { getCanvasPixelSize } from "./geometryMethods/getCanvasPixelSize";
+import { getLineWidth } from "./geometryMethods/getLineWidth";
+import { getObjectToPixelRatio } from "./geometryMethods/getObjectToPixelRatio";
+import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
+import { objectSeen } from "./geometryMethods/objectSeen";
+
+
 
 export class Scene {
     public canvas: HTMLCanvasElement;
@@ -143,77 +149,13 @@ export class Scene {
     }
 
 
-    map2DPointToCanvas (point: point2D): point2D {
-        let pointX = point.x;
-        let pointY = point.y;
 
-        pointY *= -1;
+    // Geometry-related canvas methods
+    map2DPointToCanvas = map2DPointToCanvas;
+    getCanvasPixelSize = getCanvasPixelSize;
 
-        pointX = pointX / this.camera.zoom;
-        pointY = pointY / this.camera.zoom;
+    getLineWidth = getLineWidth;
 
-        pointX += this.width / 2;
-        pointY += this.height / 2;
-
-        pointX += -this.camera.position.x / this.camera.zoom;
-        pointY += this.camera.position.y / this.camera.zoom;
-
-        return {
-            x: pointX,
-            y: pointY,
-        };
-    }
-
-    getLineWidth (lineWidth: number, ignoreZoom = false) {
-        if (ignoreZoom) {
-            return lineWidth;
-        }
-
-        return lineWidth / this.camera.zoom;
-    }
-
-    getCanvasPixelSize () {
-        // TODO Do thing with compute and consider moving this camera
-        return this.camera.zoom;
-    }
-
-
-    objectSeen (object: Object2D) {
-        const boundingBox = object.getBoundingBox();
-        const viewBox = this.camera.getViewBoundingBox();
-
-        if (boundingBox === undefined || boundingBox === null) {
-            return true;
-        }
-
-        if (!viewBox || boundingBox.max.x < viewBox.min.x || boundingBox.min.x > viewBox.max.x) {
-            // console.log(boundingBox.min.x, boundingBox.max.x);
-            return false;
-        }
-
-        if (boundingBox.max.y < viewBox.min.y || boundingBox.min.y > viewBox.max.y) {
-            return false ;
-        }
-
-        return true;
-    }
-
-    objectTooSmall (object: Object2D) {
-        const boundingBox = object.getBoundingBox();
-
-        if (!boundingBox) {
-            return false;
-        }
-
-        const width = boundingBox.max.x - boundingBox.min.x;
-        const height = boundingBox.max.y - boundingBox.min.y;
-        const pixelSize = this.getCanvasPixelSize();
-        const minSize = pixelSize * 20;
-
-        if (width < minSize || height < minSize) {
-            return true;
-        }
-
-        return false;
-    }
+    objectSeen = objectSeen;
+    getObjectToPixelRatio = getObjectToPixelRatio;
 }

@@ -7,7 +7,7 @@ import { FPSHelper } from "./engine/helpers/fpsHelper";
 import { Circle } from "./engine/objectLibrary/circle";
 import { MathFunction } from "./engine/objectLibrary/function";
 import { Square } from "./engine/objectLibrary/square";
-import { Scene } from "./engine/scene";
+import { Scene } from "./engine/scene/scene";
 import { COLORS } from "./utils/colors";
 
 // Creation and basic configuratiob

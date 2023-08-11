@@ -2,7 +2,7 @@ import { color } from "../../utils/color";
 import { COLORS } from "../../utils/colors";
 import { restrictNumber } from "../../utils/restrictNumber";
 import { PolylinePrimitive } from "../basicObjects/polylinePrimitive/polylinePrimitive";
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 import { point2D } from "../types";
 
 

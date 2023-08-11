@@ -1,5 +1,5 @@
 import { generateUUID } from "../../utils/uuid";
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 import { BoundingBox } from "./types";
 
 

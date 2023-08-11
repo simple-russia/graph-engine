@@ -3,7 +3,7 @@ import { restrictNumber } from "../../utils/restrictNumber";
 import { StraightLine } from "../objectLibrary/straightLine";
 import { Object2D } from "../basicObjects/object2d";
 import { Text } from "../basicObjects/text";
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 import { BoundingBox } from "../basicObjects/types";
 
 

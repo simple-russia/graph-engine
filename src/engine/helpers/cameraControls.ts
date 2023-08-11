@@ -1,5 +1,5 @@
 import { EventHandler } from "../events/eventsHandler";
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 
 const enum MouseButtons {
     LEFT = 0,

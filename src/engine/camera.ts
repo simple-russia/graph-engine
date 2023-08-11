@@ -1,5 +1,5 @@
 import { BoundingBox } from "./basicObjects/types";
-import { Scene } from "./scene";
+import { Scene } from "./scene/scene";
 import { point2D } from "./types";
 
 

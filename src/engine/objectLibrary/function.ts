@@ -1,6 +1,6 @@
 import { StraightLine } from "./straightLine";
 import { Object2D } from "../basicObjects/object2d";
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 import { BoundingBox } from "../basicObjects/types";
 
 const stepsPerVisible = 1000;

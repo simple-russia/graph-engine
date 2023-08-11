@@ -1,4 +1,4 @@
-import { Scene } from "../scene";
+import { Scene } from "../scene/scene";
 
 const HELPER_ELEMENT_ID = "fps-helper-display-table";
 

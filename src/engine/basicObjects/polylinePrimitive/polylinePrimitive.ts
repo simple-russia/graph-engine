@@ -1,6 +1,6 @@
 import { color } from "../../../utils/color";
 import { restrictNumber } from "../../../utils/restrictNumber";
-import { Scene } from "../../scene";
+import { Scene } from "../../scene/scene";
 import { Object2D } from "../object2d";
 import { BoundingBox } from "../types";
 import { IPolylinePrimitiveArgs, PolylinePrimitivePoint } from "./types";
@@ -26,6 +26,7 @@ export class PolylinePrimitive extends Object2D {
 
     public points: PolylinePrimitivePoint[];
     public ignoreZoom: boolean;
+
     private boundingBox: BoundingBox;
     // private isObjectTooSmall: boolean;
 
@@ -57,17 +58,19 @@ export class PolylinePrimitive extends Object2D {
             return ;
         }
 
+        const EXTRA_BOUNDING_PAD = 0;
+
         const arrX = this.points.reduce((acc, cur) => [...acc, cur.cp1x, cur.cp2x, cur.x], []).filter(x => typeof x === "number");
         const arrY = this.points.reduce((acc, cur) => [...acc, cur.cp1y, cur.cp2y, cur.y], []).filter(x => typeof x === "number");
 
         this.boundingBox = {
-            max: { x: Math.max(...arrX), y: Math.max(...arrY) },
-            min: { x: Math.min(...arrX), y: Math.min(...arrY) },
+            max: { x: Math.max(...arrX) + EXTRA_BOUNDING_PAD, y: Math.max(...arrY) + EXTRA_BOUNDING_PAD },
+            min: { x: Math.min(...arrX) - EXTRA_BOUNDING_PAD, y: Math.min(...arrY) - EXTRA_BOUNDING_PAD },
         };
     }
 
     render (scene: Scene) {
-        const isObjectTooSmall = scene.objectTooSmall(this);
+        const isObjectTooSmall = scene.getObjectToPixelRatio(this);
 
         if (this.points.length === 0) {
             // Nothing to draw

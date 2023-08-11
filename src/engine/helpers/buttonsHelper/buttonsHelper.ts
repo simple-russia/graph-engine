@@ -1,4 +1,4 @@
-import { Scene } from "../../scene";
+import { Scene } from "../../scene/scene";
 import "./buttonsHelper.scss";
 
 const HELPER_ELEMENT_ID = "buttonsHelper-helper-display-table";
