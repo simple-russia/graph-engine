@@ -125,7 +125,7 @@ export class PolylinePrimitive extends Object2D {
         }
 
         // If object's size on canvas is between 0.5 and 1 pixel draw a pixel of bgColor color
-        if (SMALL_POINT_MIN_PIXEL_SIZE < ratioToPixel && ratioToPixel < SMALL_POINT_MAX_PIXEL_SIZE) {
+        if (typeof this.bgColor === "number" && SMALL_POINT_MIN_PIXEL_SIZE < ratioToPixel && ratioToPixel < SMALL_POINT_MAX_PIXEL_SIZE) {
             const bbox = this.getBoundingBox();
 
             const p1 = scene.map2DPointToCanvas(bbox.min);
