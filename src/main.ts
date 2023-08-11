@@ -113,12 +113,18 @@ for (let i = 0; i < 300; i++) {
     scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 25000 + 4000, width: Math.random() * 25000 + 4000, lineWidth: 240, position: pos, strokeColor: 0xFF0000 }));
 }
 
+const sl = new StraightLine({ x: -100, y: -100 }, { x: -400, y: -100 }, { color: 0x00FFFF });
+scene.add(sl);
+// @ts-ignore
+window.sl = sl;
 
 
 const changingText = new Text("", { x: -400, y: 35 }, 20, COLORS.WHITE);
 const percents = new Text("", { x: -450, y: 35 }, 20, COLORS.WHITE);
 scene.add(changingText);
 scene.add(percents);
+
+
 
 
 

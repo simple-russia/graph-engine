@@ -135,8 +135,10 @@ export class AxesHelper extends Object2D {
         // Axes points
         this.xAxis.points[0].x = bounds.leftBoundary;
         this.xAxis.points[1].x = bounds.rightBoundary;
+        this.xAxis.computeBoundingBox();
         this.yAxis.points[0].y = bounds.topBoundary;
         this.yAxis.points[1].y = bounds.bottomBoundary;
+        this.yAxis.computeBoundingBox();
 
         const cameraViewBox = scene.camera.getViewBoundingBox();
 
@@ -200,6 +202,7 @@ export class AxesHelper extends Object2D {
             verticalLine.points[1].y = bounds.topBoundary;
             verticalLine.points[0].x = label.position.x;
             verticalLine.points[1].x = label.position.x;
+            verticalLine.computeBoundingBox();
         }
 
         let i_2: number;
@@ -213,6 +216,7 @@ export class AxesHelper extends Object2D {
             verticalSecondaryLine.points[0].x = x;
             verticalSecondaryLine.points[1].x = x;
             verticalSecondaryLine.strokeOpacity = secondaryOpacity * secondaryGridAdditionalOpacity;
+            verticalSecondaryLine.computeBoundingBox();
         }
 
         // Going through all y's
@@ -263,6 +267,7 @@ export class AxesHelper extends Object2D {
             horizontal.points[1].y = label.position.y;
             horizontal.points[0].x = bounds.leftBoundary;
             horizontal.points[1].x = bounds.rightBoundary;
+            horizontal.computeBoundingBox();
         }
 
 
@@ -278,6 +283,7 @@ export class AxesHelper extends Object2D {
             horizontalVerticalLine.points[0].x = bounds.leftBoundary;
             horizontalVerticalLine.points[1].x = bounds.rightBoundary;
             horizontalVerticalLine.strokeOpacity = secondaryOpacity * secondaryGridAdditionalOpacity;
+            horizontalVerticalLine.computeBoundingBox();
         }
     }
 }

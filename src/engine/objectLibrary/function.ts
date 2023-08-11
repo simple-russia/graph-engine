@@ -69,19 +69,11 @@ export class MathFunction extends Object2D {
         }
 
         for (let i = 0; i < this.functionLines.length; i++) {
-            const line = this.functionLines[i];
-            const isTooDistant = false;
-            if (isTooDistant) {
-                this.functionLines[i].points[0].x = 0;
-                this.functionLines[i].points[0].y = 0;
-                this.functionLines[i].points[1].x = 0;
-                this.functionLines[i].points[1].y = 0;
-                continue ;
-            }
             this.functionLines[i].points[0].x = functionCords[i][0];
             this.functionLines[i].points[0].y = functionCords[i][1];
             this.functionLines[i].points[1].x = functionCords[i+1][0];
             this.functionLines[i].points[1].y = functionCords[i+1][1];
+            this.functionLines[i].computeBoundingBox();
         }
     }
 }
