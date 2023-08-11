@@ -59,30 +59,24 @@ scene.add(new Text("2.5cm", { x: 0.01, y: 0.01 - .002 }, .002, COLORS.BLUE));
 scene.add(new Text("Now press HA to get back:)", { x: 0.01, y: -0.01 }, .002, COLORS.ORANGE));
 
 
-// About
-scene.add(new StraightLine({ x: -450, y: 320 }, { x: -90, y: 320 }, { color: COLORS.GREEN }));
-scene.add(new StraightLine({ x: -90, y: 320 }, { x: -90, y: 70 }, { color: COLORS.GREEN }));
-scene.add(new StraightLine({ x: -90, y: 70 }, { x: -450, y: 70 }, { color: COLORS.GREEN }));
-scene.add(new StraightLine({ x: -450, y: 70 }, { x: -450, y: 320 }, { color: COLORS.GREEN }));
 
-scene.add(new Text("danya.js", { x: -440, y: 300 }, 20, COLORS.YELLOW));
-scene.add(new Text("Hey there! This is Danya's new", { x: -440, y: 275 }, 20, COLORS.WHITE));
-scene.add(new Text("project revolving around HTML5", { x: -440, y: 250 }, 20, COLORS.WHITE));
+scene.add(new Square({ width: 400, height: 300, position: { x: -275, y: 200 }, strokeColor: 0x00FF00 }));
+scene.add(new Text("graph-engine.js", { x: -440, y: 310 }, 20, COLORS.YELLOW));
+scene.add(new Text("Hey there! This is my's new", { x: -440, y: 275 }, 20, COLORS.WHITE));
+scene.add(new Text("based on around HTML5", { x: -440, y: 250 }, 20, COLORS.WHITE));
 scene.add(new Text("canvas and custom 2D engine. In the", { x: -440, y: 225 }, 20, COLORS.WHITE));
 scene.add(new Text("near future i plan to implement a lot", { x: -440, y: 200 }, 20, COLORS.WHITE));
 scene.add(new Text("of cool projects based on this engine", { x: -440, y: 175 }, 20, COLORS.WHITE));
 scene.add(new Text("as well as add new features and", { x: -440, y: 150 }, 20, COLORS.WHITE));
 scene.add(new Text("perfomance optimizations. You can", { x: -440, y: 125 }, 20, COLORS.WHITE));
 scene.add(new Text("the source code here below:", { x: -440, y: 100 }, 20, COLORS.WHITE));
-scene.add(new Text("https://github.com/simple...", { x: -440, y: 75 }, 20, 0x5555FF));
+scene.add(new Text("https://github.com/simple-russia/gra...", { x: -440, y: 75 }, 20, 0x5555FF));
 
 
 scene.add(new Square({ bgColor: COLORS.WHITE, height: 20, width: 100, position: { x: 110, y: -60 } }));
 scene.add(new Square({ bgColor: COLORS.BLUE, height: 20, width: 100, position: { x: 110, y: -80 } }));
 scene.add(new Square({ bgColor: COLORS.RED, height: 20, width: 100, position: { x: 110, y: -100 } }));
 
-// scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: { x: -100, y: -100 } }));
-// scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
 scene.add(new Circle({ bgColor: 0x990099, position: { x: -150, y: -150 }, radius: 50 }));
 
 scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
@@ -119,13 +113,10 @@ scene.add(sl);
 window.sl = sl;
 
 
-const changingText = new Text("", { x: -400, y: 35 }, 20, COLORS.WHITE);
-const percents = new Text("", { x: -450, y: 35 }, 20, COLORS.WHITE);
+const changingText = new Text("", { x: -400, y: -25 }, 20, COLORS.WHITE);
+const percents = new Text("", { x: -450, y: -25 }, 20, COLORS.WHITE);
 scene.add(changingText);
 scene.add(percents);
-
-
-
 
 
 const phrases = ["3", "2", "1", "New", "framework", "for", "doing", "cool", "things"];
