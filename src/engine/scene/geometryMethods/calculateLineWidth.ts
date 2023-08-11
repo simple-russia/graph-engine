@@ -1,4 +1,4 @@
-export function getLineWidth (lineWidth: number, ignoreZoom = false) {
+export function calculateLineWidth (lineWidth: number, ignoreZoom = false) {
     if (ignoreZoom) {
         return lineWidth;
     }

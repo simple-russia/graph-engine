@@ -3,7 +3,7 @@ import { Object2D } from "../basicObjects/object2d";
 import { Camera } from "../camera";
 import { EventHandler } from "../events/eventsHandler";
 import { getCanvasPixelSize } from "./geometryMethods/getCanvasPixelSize";
-import { getLineWidth } from "./geometryMethods/getLineWidth";
+import { calculateLineWidth } from "./geometryMethods/calculateLineWidth";
 import { getObjectToPixelRatio } from "./geometryMethods/getObjectToPixelRatio";
 import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
 import { objectSeen } from "./geometryMethods/objectSeen";
@@ -154,7 +154,7 @@ export class Scene {
     map2DPointToCanvas = map2DPointToCanvas;
     getCanvasPixelSize = getCanvasPixelSize;
 
-    getLineWidth = getLineWidth;
+    getLineWidth = calculateLineWidth;
 
     objectSeen = objectSeen;
     getObjectToPixelRatio = getObjectToPixelRatio;

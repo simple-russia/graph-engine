@@ -70,7 +70,7 @@ export class PolylinePrimitive extends Object2D {
     }
 
     render (scene: Scene) {
-        const isObjectTooSmall = scene.getObjectToPixelRatio(this);
+        const ratioToPixel = scene.getObjectToPixelRatio(this);
 
         if (this.points.length === 0) {
             // Nothing to draw
@@ -107,17 +107,18 @@ export class PolylinePrimitive extends Object2D {
             }
         }
 
-        if (typeof this.bgColor === "number" && !isObjectTooSmall) {
+        if (typeof this.bgColor === "number" && ratioToPixel > 1) {
             ctx.fillStyle = color(this.bgColor, this.bgOpacity);
             ctx.fill();
         }
 
-        if (typeof this.strokeColor === "number" && !isObjectTooSmall) {
+        // Draw only if the color is defined & size at is at least 7 pixels on cavas
+        if (typeof this.strokeColor === "number" && ratioToPixel >= 7) {
             ctx.strokeStyle = color(this.strokeColor, this.strokeOpacity);
             ctx.stroke();
         }
 
-        if (isObjectTooSmall) {
+        if (ratioToPixel <= 1) {
             const bbox = this.getBoundingBox();
 
             const p1 = scene.map2DPointToCanvas(bbox.min);
