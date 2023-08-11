@@ -134,7 +134,7 @@ export class AxesHelper extends Object2D {
         // First hide all the axes and labels, then compute them again.
         this.hideLabelsAndGrid();
 
-        const bounds = scene.camera.getVisibleBoundaries(scene);
+        const bounds = scene.camera.getVisibleBoundaries();
 
         const width = bounds.rightBoundary - bounds.leftBoundary;
         // const height = bounds.topBoundary - bounds.bottomBoundary;

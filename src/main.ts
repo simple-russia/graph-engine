@@ -88,12 +88,12 @@ scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius
 scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
 
-for (let i = 0; i < 5000; i++) {
+for (let i = 0; i < 100_000; i++) {
     const pos = {
-        x: 100 + Math.random() * 44900,
-        y: 100 + Math.random() * 44900,
+        x: 100 + Math.random() * 144900,
+        y: 100 + Math.random() * 144900,
     };
-    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos, strokeColor: Math.floor(0xFFFFFF * Math.random()) }));
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: 60, width: 60, position: pos, strokeColor: 0xFF0000 }));
 }
 
 
@@ -105,6 +105,7 @@ scene.add(percents);
 
 const phrases = ["3", "2", "1", "New", "framework", "for", "doing", "cool", "things"];
 const percentsArr: string[] = [];
+
 for (let i = 0; i < 5; i++) {
     phrases.unshift("Loading...");
     phrases.unshift("Loading..");

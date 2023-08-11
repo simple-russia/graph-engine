@@ -63,15 +63,19 @@ export class Camera {
         this.zoom = this.zoom / value;
     }
 
-    public getVisibleBoundaries (scene: Scene) {
-        const centerX = this.position.x;
-        const centerY = this.position.y;
+    public getVisibleBoundaries () {
+        const bbox = this.getViewBoundingBox();
+
+        if (!bbox) {
+            // TODO fix edge case...
+            return {} ;
+        }
 
         return {
-            leftBoundary: centerX - (scene.width / 2) * this.zoom,
-            rightBoundary: centerX + (scene.width / 2) * this.zoom,
-            topBoundary: centerY + (scene.height / 2) * this.zoom,
-            bottomBoundary: centerY - (scene.height / 2) * this.zoom,
+            leftBoundary: bbox.min.x,
+            rightBoundary: bbox.max.x,
+            topBoundary: bbox.max.y,
+            bottomBoundary: bbox.min.y,
         };
     }
 
@@ -83,6 +87,8 @@ export class Camera {
         if (this.position === undefined || this.zoom === undefined) {
             return ;
         }
+
+        const OFFSET = 100 * this.zoom;
 
         const centerX = this.position.x;
         const centerY = this.position.y;
@@ -96,12 +102,12 @@ export class Camera {
 
         this.viewBoundingBox = {
             max: {
-                x: rightBoundary,
-                y: topBoundary,
+                x: rightBoundary - OFFSET,
+                y: topBoundary - OFFSET,
             },
             min: {
-                x: leftBoundary,
-                y: bottomBoundary,
+                x: leftBoundary + OFFSET,
+                y: bottomBoundary + OFFSET,
             }
         };
     }

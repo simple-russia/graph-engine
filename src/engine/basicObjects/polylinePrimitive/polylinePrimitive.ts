@@ -16,7 +16,6 @@ const DEFAULT_POLYLINE_OPTIONS: IPolylinePrimitiveArgs = {
     strokeOpacity: 1,
 };
 
-
 export class PolylinePrimitive extends Object2D {
     public lineWidth: number;
 
@@ -28,6 +27,7 @@ export class PolylinePrimitive extends Object2D {
     public points: PolylinePrimitivePoint[];
     public ignoreZoom: boolean;
     private boundingBox: BoundingBox;
+    // private isObjectTooSmall: boolean;
 
 
     constructor(options: Partial<IPolylinePrimitiveArgs> = {}) {
@@ -43,6 +43,7 @@ export class PolylinePrimitive extends Object2D {
         this.ignoreZoom = options.ignoreZoom;
 
         this.lineWidth = options.lineWidth;
+
 
         this.computeBoundingBox();
     }
@@ -66,26 +67,13 @@ export class PolylinePrimitive extends Object2D {
     }
 
     render (scene: Scene) {
-        // TODO try to optimize with memorization
+        const isObjectTooSmall = scene.objectTooSmall(this);
 
         if (this.points.length === 0) {
             // Nothing to draw
             return ;
         }
 
-        // {
-        //     // Perfomance test
-        //     const ctx = scene.canvas.getContext("2d");
-        //     const points = this.points;
-        //     const start = scene.map2DPointToCanvas({ ...points[0] });
-        //     ctx.beginPath();
-        //     ctx.moveTo(start.x, start.y);
-        //     // test
-        //     ctx.lineTo(10, 10);
-        //     ctx.fillStyle = "#FF00FF";
-        //     ctx.stroke();
-        //     return ;
-        // }
 
         const ctx = scene.canvas.getContext("2d");
         const points = this.points;
@@ -116,14 +104,26 @@ export class PolylinePrimitive extends Object2D {
             }
         }
 
-        if (typeof this.bgColor === "number") {
+        if (typeof this.bgColor === "number" && !isObjectTooSmall) {
             ctx.fillStyle = color(this.bgColor, this.bgOpacity);
             ctx.fill();
         }
 
-        if (typeof this.strokeColor === "number") {
+        if (typeof this.strokeColor === "number" && !isObjectTooSmall) {
             ctx.strokeStyle = color(this.strokeColor, this.strokeOpacity);
             ctx.stroke();
+        }
+
+        if (isObjectTooSmall) {
+            const bbox = this.getBoundingBox();
+
+            const p1 = scene.map2DPointToCanvas(bbox.min);
+            const p2 = scene.map2DPointToCanvas(bbox.max);
+            const width = p2.x - p1.x;
+            const height = p2.y - p1.y;
+
+            ctx.fillStyle = color(this.bgColor, this.bgOpacity);
+            ctx.fillRect(p1.x, p1.y, width, height);
         }
     }
 }

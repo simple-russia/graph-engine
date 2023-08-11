@@ -172,6 +172,11 @@ export class Scene {
         return lineWidth / this.camera.zoom;
     }
 
+    getCanvasPixelSize () {
+        // TODO Do thing with compute and consider moving this camera
+        return this.camera.zoom;
+    }
+
 
     objectSeen (object: Object2D) {
         const boundingBox = object.getBoundingBox();
@@ -191,5 +196,24 @@ export class Scene {
         }
 
         return true;
+    }
+
+    objectTooSmall (object: Object2D) {
+        const boundingBox = object.getBoundingBox();
+
+        if (!boundingBox) {
+            return false;
+        }
+
+        const width = boundingBox.max.x - boundingBox.min.x;
+        const height = boundingBox.max.y - boundingBox.min.y;
+        const pixelSize = this.getCanvasPixelSize();
+        const minSize = pixelSize * 20;
+
+        if (width < minSize || height < minSize) {
+            return true;
+        }
+
+        return false;
     }
 }
