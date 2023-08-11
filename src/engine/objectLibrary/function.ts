@@ -27,7 +27,7 @@ export class MathFunction extends Object2D {
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true }));
+        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color: 0xFF0000, lineWidth: 10, ignoreZoom: true }));
     }
 
 
@@ -58,6 +58,7 @@ export class MathFunction extends Object2D {
         const functionCords: number[][] = [];
 
         let currentX = leftBoundaryXnormalized;
+
         while (currentX <= rightBoundaryXnormalized) {
             const x = currentX;
             const y = this.formula(x);

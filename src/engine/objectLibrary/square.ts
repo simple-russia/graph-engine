@@ -41,6 +41,7 @@ export class Square extends PolylinePrimitive {
                 { x: options.position.x + options.width / 2, y: options.position.y + options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
                 { x: options.position.x - options.width / 2, y: options.position.y + options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
                 { x: options.position.x - options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+                { x: options.position.x + options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
             ],
         });
     }

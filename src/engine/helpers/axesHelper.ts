@@ -15,15 +15,6 @@ const minXSteps = 7;
 
 const secondaryGridAdditionalOpacity = 0.8;
 
-const log = (() => {
-    let lastVal = 0;
-
-    return function (val: any) {
-        if (val === lastVal) return ;
-        lastVal = val;
-        console.log(val);
-    };
-})();
 
 type LabelStep = number;
 type SecondaryGridStep = number;
@@ -79,8 +70,8 @@ export class AxesHelper extends Object2D {
     constructor () {
         super();
 
-        this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 0.5 });
-        this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE, opacity: 1 });
+        this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
+        this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
 
         this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true));
         this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true));
@@ -107,9 +98,11 @@ export class AxesHelper extends Object2D {
     public hideLabelsAndGrid () {
         this.xLabels.forEach(label => {
             label.text = "";
+            label.opacity = 1;
         });
         this.yLabels.forEach(label => {
             label.text = "";
+            label.opacity = 1;
         });
 
         for (const grid of [this.gridVerticalLines, this.gridSecondaryHorizontalLines, this.gridSecondaryVerticalLines, this.gridHorizontalLines]) {
@@ -145,6 +138,8 @@ export class AxesHelper extends Object2D {
         this.yAxis.points[0].y = bounds.topBoundary;
         this.yAxis.points[1].y = bounds.bottomBoundary;
 
+        const cameraViewBox = scene.camera.getViewBoundingBox();
+
         // What step to use for labels
         const [step, secondaryStep, secondaryOpacity] = getClosestPrettyStep(width);
 
@@ -173,6 +168,32 @@ export class AxesHelper extends Object2D {
             label.position.y = yLabelOffset * scene.camera.zoom;
             label.text = x.toFixed(showDecimalNumbers);
 
+            // Labels opacity
+            if (label.position.y < cameraViewBox.min.y) {
+                label.position.y = cameraViewBox.min.y;
+            }
+            if (label.position.y > cameraViewBox.max.y) {
+                label.position.y = cameraViewBox.max.y;
+            }
+
+            // TODO change to some contanct. Step is always different
+            const TRANSPARENCY_OFFSET = scene.translateToCanvasLength(350);
+            if (label.position.x > bounds.rightBoundary - TRANSPARENCY_OFFSET) {
+                const gap = bounds.rightBoundary - TRANSPARENCY_OFFSET;
+                label.opacity = 1 - (label.position.x - gap) / TRANSPARENCY_OFFSET;
+            }
+            if (label.position.x < bounds.leftBoundary + TRANSPARENCY_OFFSET) {
+                const gap = bounds.leftBoundary + TRANSPARENCY_OFFSET;
+                label.opacity = 1 - (gap - label.position.x) / TRANSPARENCY_OFFSET;
+            }
+
+            if (label.position.x > bounds.rightBoundary) {
+                label.opacity = 0;
+            }
+            if (label.position.x < bounds.leftBoundary) {
+                label.opacity = 0;
+            }
+
             // Add a vertical line
             const verticalLine = this.gridVerticalLines[i_1];
             verticalLine.points[0].y = bounds.bottomBoundary;
@@ -191,7 +212,7 @@ export class AxesHelper extends Object2D {
             verticalSecondaryLine.points[1].y = bounds.topBoundary;
             verticalSecondaryLine.points[0].x = x;
             verticalSecondaryLine.points[1].x = x;
-            verticalSecondaryLine.opacity = secondaryOpacity * secondaryGridAdditionalOpacity;
+            verticalSecondaryLine.strokeOpacity = secondaryOpacity * secondaryGridAdditionalOpacity;
         }
 
         // Going through all y's
@@ -210,6 +231,31 @@ export class AxesHelper extends Object2D {
             label.position.y = y;
             label.position.x = xLabelOffset * scene.camera.zoom;
             label.text = y.toFixed(showDecimalNumbers);
+
+            // Labels opacity
+            if (label.position.x < cameraViewBox.min.x) {
+                label.position.x = cameraViewBox.min.x;
+            }
+            if (label.position.x > cameraViewBox.max.x) {
+                label.position.x = cameraViewBox.max.x;
+            }
+
+            const TRANSPARENCY_OFFSET = scene.translateToCanvasLength(100);
+            if (label.position.y > bounds.topBoundary - TRANSPARENCY_OFFSET) {
+                const gap = bounds.topBoundary - TRANSPARENCY_OFFSET;
+                label.opacity = 1 - (label.position.y - gap) / TRANSPARENCY_OFFSET;
+            }
+            if (label.position.y < bounds.bottomBoundary + TRANSPARENCY_OFFSET) {
+                const gap = bounds.bottomBoundary + TRANSPARENCY_OFFSET;
+                label.opacity = 1 - (gap - label.position.y) / TRANSPARENCY_OFFSET;
+            }
+
+            if (label.position.y > bounds.topBoundary) {
+                label.opacity = 0;
+            }
+            if (label.position.y < bounds.bottomBoundary) {
+                label.opacity = 0;
+            }
 
             // Add a vertical line
             const horizontal = this.gridHorizontalLines[j];
@@ -231,7 +277,7 @@ export class AxesHelper extends Object2D {
             horizontalVerticalLine.points[1].y = y;
             horizontalVerticalLine.points[0].x = bounds.leftBoundary;
             horizontalVerticalLine.points[1].x = bounds.rightBoundary;
-            horizontalVerticalLine.opacity = secondaryOpacity * secondaryGridAdditionalOpacity;
+            horizontalVerticalLine.strokeOpacity = secondaryOpacity * secondaryGridAdditionalOpacity;
         }
     }
 }

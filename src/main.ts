@@ -13,7 +13,7 @@ import { COLORS } from "./utils/colors";
 // Creation and basic configuratiob
 const root = document.querySelector("#root")!;
 const scene = new Scene(root);
-scene.fps = 100;
+scene.fps = 60;
 scene.bgColor = 0x000000;
 
 // Camera controls
@@ -83,7 +83,7 @@ scene.add(new Square({ bgColor: COLORS.RED, height: 20, width: 100, position: { 
 
 // scene.add(new Square({ bgColor: COLORS.WHITE, height: 60, width: 100, position: { x: -100, y: -100 } }));
 // scene.add(new Circle({ bgColor: COLORS.RED, position: { x: -100, y: -100 }, radius: 20 }));
-scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius: 50 }));
+scene.add(new Circle({ bgColor: 0x990099, position: { x: -150, y: -150 }, radius: 50 }));
 
 scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
@@ -119,6 +119,8 @@ const changingText = new Text("", { x: -400, y: 35 }, 20, COLORS.WHITE);
 const percents = new Text("", { x: -450, y: 35 }, 20, COLORS.WHITE);
 scene.add(changingText);
 scene.add(percents);
+
+
 
 const phrases = ["3", "2", "1", "New", "framework", "for", "doing", "cool", "things"];
 const percentsArr: string[] = [];

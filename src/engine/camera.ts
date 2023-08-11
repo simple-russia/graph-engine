@@ -8,10 +8,11 @@ const MAX_ZOOM = 1000000;
 const MIN_ZOOM = 0.00000001;
 
 export class Camera {
-    private __realZoom = 0;
-    public position: point2D;
+    private __realZoom = 1;
+    public position: point2D = { x: 0, y: 0 };
 
-    private viewBoundingBox: BoundingBox;
+    // TODO fix initial bounding
+    private viewBoundingBox: BoundingBox = { max: { x: 10, y: 10 }, min: { x: 0, y: 0 } };
 
     public scene: Scene;
 
@@ -55,6 +56,11 @@ export class Camera {
         this.computeViewBoundingBox();
     }
 
+    onAddedToScene (scene: Scene) {
+        this.scene = scene;
+        this.computeViewBoundingBox();
+    }
+
     public zoomIn(value=DEFAULT_ZOOM_STEP) {
         this.zoom = this.zoom * value;
     }
@@ -65,11 +71,6 @@ export class Camera {
 
     public getVisibleBoundaries () {
         const bbox = this.getViewBoundingBox();
-
-        if (!bbox) {
-            // TODO fix edge case...
-            return {} ;
-        }
 
         return {
             leftBoundary: bbox.min.x,
@@ -84,7 +85,7 @@ export class Camera {
     }
 
     public computeViewBoundingBox () {
-        if (this.position === undefined || this.zoom === undefined) {
+        if (!this.scene) {
             return ;
         }
 

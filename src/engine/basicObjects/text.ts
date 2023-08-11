@@ -12,15 +12,17 @@ export class Text extends Object2D {
     public fontSize: number;
     public text: string;
     public ignoreZoom: boolean;
+    public opacity: number;
 
 
-    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false) {
+    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false, opacity = 1) {
         super();
         this.color = color;
         this.position = position;
         this.fontSize = fontSize;
         this.text = text;
         this.ignoreZoom = ignoreZoom;
+        this.opacity = opacity;
     }
 
 
@@ -34,7 +36,7 @@ export class Text extends Object2D {
 
         const fontSize = this.fontSize / (this.ignoreZoom ? 1 : camera.zoom);
 
-        ctx.fillStyle = color(this.color);
+        ctx.fillStyle = color(this.color, this.opacity);
         ctx.font = `${fontSize}px Arial`;
         ctx.lineWidth = 1;
 

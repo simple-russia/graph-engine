@@ -7,6 +7,7 @@ import { calculateLineWidth } from "./geometryMethods/calculateLineWidth";
 import { getObjectToPixelRatio } from "./geometryMethods/getObjectToPixelRatio";
 import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
 import { objectSeen } from "./geometryMethods/objectSeen";
+import { translateToCanvasLength } from "./geometryMethods/translateToCanvasLength";
 
 
 
@@ -43,7 +44,7 @@ export class Scene {
         this.height = rootHeight;
 
         this.camera = new Camera();
-        this.camera.scene = this;
+        this.camera.onAddedToScene(this);
 
         this.children = [];
 
@@ -173,7 +174,9 @@ export class Scene {
     getCanvasPixelSize = getCanvasPixelSize;
 
     getLineWidth = calculateLineWidth;
+    translateToCanvasLength = translateToCanvasLength;
 
     objectSeen = objectSeen;
     getObjectToPixelRatio = getObjectToPixelRatio;
+
 }
