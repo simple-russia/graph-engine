@@ -46,4 +46,11 @@ export class StraightLine extends PolylinePrimitive {
     render (scene: Scene) {
         super.render(scene);
     }
+
+    setPoints (point1: point2D, point2: point2D) {
+        this.points = [
+            { x: point1.x, y: point1.y, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
+            { x: point2.x, y: point2.y, cp1x: null, cp1y: null, cp2x: null, cp2y: null }
+        ];
+    }
 }
