@@ -3,6 +3,7 @@ import { restrictNumber } from "../../../utils/restrictNumber";
 import { Scene } from "../../scene/scene";
 import { Object2D } from "../object2d";
 import { BoundingBox } from "../types";
+import { FILL_MIN_PIXEL_SIZE, SMALL_POINT_MAX_PIXEL_SIZE, SMALL_POINT_MIN_PIXEL_SIZE, STROKE_MIN_PIXEL_SIZE } from "./constants";
 import { IPolylinePrimitiveArgs, PolylinePrimitivePoint } from "./types";
 
 
@@ -107,18 +108,20 @@ export class PolylinePrimitive extends Object2D {
             }
         }
 
-        if (typeof this.bgColor === "number" && ratioToPixel > 1) {
+        // Draw only if the color is defined & size at is at least 1 pixel of size on cavas
+        if (typeof this.bgColor === "number" && ratioToPixel >= FILL_MIN_PIXEL_SIZE) {
             ctx.fillStyle = color(this.bgColor, this.bgOpacity);
             ctx.fill();
         }
 
-        // Draw only if the color is defined & size at is at least 7 pixels on cavas
-        if (typeof this.strokeColor === "number" && ratioToPixel >= 7) {
+        // Draw only if the color is defined & size at is at least 7 pixels of size on cavas
+        if (typeof this.strokeColor === "number" && ratioToPixel >= STROKE_MIN_PIXEL_SIZE) {
             ctx.strokeStyle = color(this.strokeColor, this.strokeOpacity);
             ctx.stroke();
         }
 
-        if (ratioToPixel <= 1) {
+        // If object's size on canvas is between 0.5 and 1 pixel draw a pixel of bgColor color
+        if (SMALL_POINT_MIN_PIXEL_SIZE < ratioToPixel && ratioToPixel < SMALL_POINT_MAX_PIXEL_SIZE) {
             const bbox = this.getBoundingBox();
 
             const p1 = scene.map2DPointToCanvas(bbox.min);
@@ -126,7 +129,12 @@ export class PolylinePrimitive extends Object2D {
             const width = p2.x - p1.x;
             const height = p2.y - p1.y;
 
-            ctx.fillStyle = color(this.bgColor, this.bgOpacity);
+            // The smaller it is the less transparent it's going to be untill it's not rendered at all
+            const opacity = (ratioToPixel - SMALL_POINT_MIN_PIXEL_SIZE) / (SMALL_POINT_MAX_PIXEL_SIZE - SMALL_POINT_MIN_PIXEL_SIZE);
+
+            console.log("aaa");
+
+            ctx.fillStyle = color(this.bgColor, opacity);
             ctx.fillRect(p1.x, p1.y, width, height);
         }
     }
