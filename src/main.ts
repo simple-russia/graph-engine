@@ -30,9 +30,9 @@ myCustomButtonsHelper(scene, cameraControls);
 scene.start();
 
 // Functions
-// scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
-// scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
-// scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
+scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
+scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
+scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
 
 // Fun texts
 scene.add(new Text("Made by Danya (simple.alex)", { x: 100, y: 200 }, 16, COLORS.RED));
@@ -88,15 +88,16 @@ scene.add(new Circle({ bgColor: 0x990099, position: { x: -200, y: -150 }, radius
 scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
 
 
-for (let i = 0; i < 100_000; i++) {
+for (let i = 0; i < 10_000; i++) {
     const pos = {
-        x: 100 + Math.random() * 1244900,
-        y: 100 + Math.random() * 1244900,
+        x: 100 + Math.random() * 44900,
+        y: 100 + Math.random() * 44900,
     };
-    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random()*1300 + 10, width: Math.random()*2100 + 10, lineWidth: 4, position: pos, strokeColor: 0xFF0000 }));
+    const size = Math.random()* 70 + 10;
+    scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: size, width: size, lineWidth: 4, position: pos, strokeColor: 0xFF0000 }));
 }
 
-for (let i = 0; i < 30_000; i++) {
+for (let i = 0; i < 3_000; i++) {
     const pos = {
         x: 1000 + Math.random() * 1244900,
         y: 100 + Math.random() * 1244900,
@@ -104,7 +105,7 @@ for (let i = 0; i < 30_000; i++) {
     scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 1700 + 1000, width: Math.random() * 2100 + 1000, lineWidth: 24, position: pos, strokeColor: 0xFF0000 }));
 }
 
-for (let i = 0; i < 3_000; i++) {
+for (let i = 0; i < 300; i++) {
     const pos = {
         x: 10000 + Math.random() * 1244900,
         y: 10000 + Math.random() * 1244900,

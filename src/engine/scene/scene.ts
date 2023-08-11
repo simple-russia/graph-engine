@@ -13,8 +13,8 @@ import { objectSeen } from "./geometryMethods/objectSeen";
 export class Scene {
     public canvas: HTMLCanvasElement;
     public bgColor = 0x00FF00;
-    public readonly width: number;
-    public readonly height: number;
+    public width: number;
+    public height: number;
     public camera: Camera;
     public isRunning = false;
 
@@ -53,6 +53,13 @@ export class Scene {
         this.fpsMeasure();
 
         this.eventHandler = new EventHandler(["render", "fpsUpdate"]);
+
+        function resizeCallback () {
+            this.computeCanvasDimensions();
+        }
+
+        const sizeObserver = new ResizeObserver(resizeCallback.bind(this));
+        sizeObserver.observe(this.canvas.parentElement);
     }
 
 
@@ -148,6 +155,17 @@ export class Scene {
         }, 1000);
     }
 
+
+    computeCanvasDimensions () {
+        const cont = this.canvas.parentElement;
+
+        this.canvas.width = cont.clientWidth;
+        this.canvas.height = cont.clientHeight;
+        this.width = cont.clientWidth;
+        this.height = cont.clientHeight;
+
+        this.render();
+    }
 
 
     // Geometry-related canvas methods
