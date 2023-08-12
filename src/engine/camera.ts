@@ -16,22 +16,25 @@ export class Camera {
 
     public scene: Scene;
 
+    public boundingBoxViewOffset: number;
+
 
     constructor () {
         this.zoom = 1;
         this.position = { x: 0, y: 0 };
+        this.boundingBoxViewOffset = 100;
     }
 
 
     public translateX(n: number) {
         // TODO move to observable
-        this.computeViewBoundingBox();
         this.position.x = this.position.x + n;
+        this.computeViewBoundingBox();
     }
 
     public translateY(n: number) {
-        this.computeViewBoundingBox();
         this.position.y = this.position.y + n;
+        this.computeViewBoundingBox();
     }
 
     get zoom() {
@@ -84,12 +87,24 @@ export class Camera {
         return this.viewBoundingBox;
     }
 
+    public getCanvasViewbox () {
+        const bbox = this.getViewBoundingBox();
+
+        const pointMax = this.scene.map2DPointToCanvas(bbox.max);
+        const pointMin = this.scene.map2DPointToCanvas(bbox.min);
+
+        return {
+            max: { x: pointMax.x, y: pointMin.y },
+            min: { x: pointMin.x, y: pointMax.y },
+        };
+    }
+
     public computeViewBoundingBox () {
         if (!this.scene) {
             return ;
         }
 
-        const OFFSET = 0 * this.zoom;
+        const OFFSET = this.scene.translateToSceneLength(this.boundingBoxViewOffset);
 
         const centerX = this.position.x;
         const centerY = this.position.y;

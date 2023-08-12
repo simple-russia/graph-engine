@@ -8,6 +8,7 @@ import { getObjectToPixelRatio } from "./geometryMethods/getObjectToPixelRatio";
 import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
 import { objectSeen } from "./geometryMethods/objectSeen";
 import { translateToCanvasLength } from "./geometryMethods/translateToCanvasLength";
+import { translateToSceneLength } from "./geometryMethods/translateTpSceneLength";
 
 
 
@@ -104,13 +105,16 @@ export class Scene {
     }
 
     render () {
+        const viewbox = this.camera.getCanvasViewbox();
         const ctx = this.canvas.getContext("2d");
+
         ctx.clearRect(0, 0, this.width, this.height);
         let objectsRendered = 0;
 
         const fillStyle = color(this.bgColor);
         ctx.fillStyle = fillStyle;
-        ctx.fillRect(0, 0, this.width, this.height);
+        ctx.fillRect(viewbox.min.x, viewbox.min.y, viewbox.max.x - viewbox.min.x, viewbox.max.y - viewbox.min.y);
+        (Math.random() > 0.95) && console.log(viewbox.max.y, viewbox.min.y);
 
 
         this.children.forEach(object2d => {
@@ -175,6 +179,7 @@ export class Scene {
 
     getLineWidth = calculateLineWidth;
     translateToCanvasLength = translateToCanvasLength;
+    translateToSceneLength = translateToSceneLength;
 
     objectSeen = objectSeen;
     getObjectToPixelRatio = getObjectToPixelRatio;
