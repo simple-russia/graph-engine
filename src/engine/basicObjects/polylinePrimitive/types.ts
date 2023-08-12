@@ -6,6 +6,7 @@ export interface IPolylinePrimitiveArgs {
     strokeOpacity: number
     points: PolylinePrimitivePoint[]
     ignoreZoom: boolean
+    ignoreSmallPointOptimization: boolean
 }
 
 export type PolylinePrimitiveBeizerPoint = {

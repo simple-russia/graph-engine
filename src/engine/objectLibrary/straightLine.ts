@@ -10,6 +10,7 @@ interface ILineOptions {
     color: number;
     opacity: number;
     ignoreZoom: boolean;
+    ignoreSmallPointOptimization: boolean;
 }
 
 const LINE_DEFAULT_OPTIONS: ILineOptions = {
@@ -17,6 +18,7 @@ const LINE_DEFAULT_OPTIONS: ILineOptions = {
     color: COLORS.BLACK,
     ignoreZoom: false,
     opacity: 1,
+    ignoreSmallPointOptimization: false,
 };
 
 
@@ -24,6 +26,7 @@ export class StraightLine extends PolylinePrimitive {
     public lineWidth: number;
     public ignoreZoom: boolean;
     public opacity: number;
+    public ignoreSmallPointOptimization: boolean;
 
 
     constructor(point1: point2D, point2: point2D, options?: Partial<ILineOptions>) {
@@ -35,6 +38,7 @@ export class StraightLine extends PolylinePrimitive {
         this.lineWidth = options.lineWidth;
         this.ignoreZoom = options.ignoreZoom;
         this.strokeOpacity = options.opacity;
+        this.ignoreSmallPointOptimization = options.ignoreSmallPointOptimization;
 
         // TODO make observable and do compute bbox on points change
         this.points = [
@@ -57,6 +61,8 @@ export class StraightLine extends PolylinePrimitive {
     }
 
     getBoundingBox(): BoundingBox {
+        (Math.random() > 0.99997) && console.log("bb");
+
         return super.getBoundingBox();
     }
 }

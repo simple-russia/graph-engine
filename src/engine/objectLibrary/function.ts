@@ -2,6 +2,7 @@ import { StraightLine } from "./straightLine";
 import { Object2D } from "../basicObjects/object2d";
 import { Scene } from "../scene/scene";
 import { BoundingBox } from "../basicObjects/types";
+import { randomColor } from "../../utils/randomColor";
 
 const stepsPerVisible = 1000;
 const leftExtraSteps = -2;
@@ -18,7 +19,6 @@ export class MathFunction extends Object2D {
     public color: number;
     private functionLines: StraightLine[];
 
-    private bounbaryLine: StraightLine;
 
 
     constructor (formula: (x: number) => number, color=0xFF0000) {
@@ -27,7 +27,7 @@ export class MathFunction extends Object2D {
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true }));
+        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true, ignoreSmallPointOptimization: true }));
     }
 
 
@@ -75,5 +75,8 @@ export class MathFunction extends Object2D {
             this.functionLines[i].points[1].y = functionCords[i+1][1];
             this.functionLines[i].computeBoundingBox();
         }
+
+        // @ts-ignore
+        window.f = this;
     }
 }

@@ -31,8 +31,9 @@ scene.start();
 
 // Functions
 scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
-scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
-scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
+scene.add(new MathFunction((x => Math.sin(x * 0.05) * 100), 0x2222DD));
+// scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
+// scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
 
 // Fun texts
 scene.add(new Text("Made by Danya (simple.alex)", { x: 100, y: 200 }, 16, COLORS.RED));

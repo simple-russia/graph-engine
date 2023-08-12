@@ -89,7 +89,7 @@ export class Camera {
             return ;
         }
 
-        const OFFSET = 100 * this.zoom;
+        const OFFSET = 0 * this.zoom;
 
         const centerX = this.position.x;
         const centerY = this.position.y;

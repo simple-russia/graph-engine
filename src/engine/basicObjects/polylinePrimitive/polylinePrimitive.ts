@@ -15,6 +15,7 @@ const DEFAULT_POLYLINE_OPTIONS: IPolylinePrimitiveArgs = {
     points: [],
     bgOpacity: 1,
     strokeOpacity: 1,
+    ignoreSmallPointOptimization: false,
 };
 
 export class PolylinePrimitive extends Object2D {
@@ -27,6 +28,7 @@ export class PolylinePrimitive extends Object2D {
 
     public points: PolylinePrimitivePoint[];
     public ignoreZoom: boolean;
+    public ignoreSmallPointOptimization: boolean;
 
     private boundingBox: BoundingBox;
 
@@ -42,6 +44,7 @@ export class PolylinePrimitive extends Object2D {
 
         this.points = options.points;
         this.ignoreZoom = options.ignoreZoom;
+        this.ignoreSmallPointOptimization = options.ignoreSmallPointOptimization;
 
         this.lineWidth = options.lineWidth;
 
@@ -112,20 +115,23 @@ export class PolylinePrimitive extends Object2D {
             }
         }
 
+        const isBgColorNotNull = typeof this.bgColor === "number";
+        const isStrokeColorNotNull = typeof this.strokeColor === "number";
+
         // Draw only if the color is defined & size at is at least 1 pixel of size on cavas
-        if (typeof this.bgColor === "number" && ratioToPixel >= FILL_MIN_PIXEL_SIZE) {
+        if (isBgColorNotNull && (this.ignoreSmallPointOptimization || ratioToPixel >= FILL_MIN_PIXEL_SIZE)) {
             ctx.fillStyle = color(this.bgColor, this.bgOpacity);
             ctx.fill();
         }
 
         // Draw only if the color is defined & size at is at least 7 pixels of size on cavas
-        if (typeof this.strokeColor === "number" && ratioToPixel >= STROKE_MIN_PIXEL_SIZE) {
+        if (isStrokeColorNotNull && (this.ignoreSmallPointOptimization || ratioToPixel >= STROKE_MIN_PIXEL_SIZE)) {
             ctx.strokeStyle = color(this.strokeColor, this.strokeOpacity);
             ctx.stroke();
         }
 
         // If object's size on canvas is between 0.5 and 1 pixel draw a pixel of bgColor color
-        if (typeof this.bgColor === "number" && SMALL_POINT_MIN_PIXEL_SIZE < ratioToPixel && ratioToPixel < SMALL_POINT_MAX_PIXEL_SIZE) {
+        if (!this.ignoreSmallPointOptimization && typeof this.bgColor === "number" && SMALL_POINT_MIN_PIXEL_SIZE < ratioToPixel && ratioToPixel < SMALL_POINT_MAX_PIXEL_SIZE) {
             const bbox = this.getBoundingBox();
 
             const p1 = scene.map2DPointToCanvas(bbox.min);
