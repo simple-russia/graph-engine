@@ -1,14 +1,14 @@
 import { myCustomButtonsHelper } from "./buttons";
-import { StraightLine } from "./engine/objectLibrary/straightLine";
-import { Text } from "./engine/basicObjects/text";
-import { AxesHelper } from "./engine/helpers/axesHelper";
-import { CameraControls } from "./engine/helpers/cameraControls";
-import { FPSHelper } from "./engine/helpers/fpsHelper";
-import { Circle } from "./engine/objectLibrary/circle";
-import { MathFunction } from "./engine/objectLibrary/function";
-import { Square } from "./engine/objectLibrary/square";
-import { Scene } from "./engine/scene/scene";
-import { COLORS } from "./utils/colors";
+import { StraightLine } from "./package/engine/objectLibrary/straightLine";
+import { Text } from "./package/engine/basicObjects/text";
+import { AxesHelper } from "./package/engine/helpers/axesHelper";
+import { CameraControls } from "./package/engine/helpers/cameraControls";
+import { FPSHelper } from "./package/engine/helpers/fpsHelper";
+import { Circle } from "./package/engine/objectLibrary/circle";
+import { MathFunction } from "./package/engine/objectLibrary/function";
+import { Square } from "./package/engine/objectLibrary/square";
+import { Scene } from "./package/engine/scene/scene";
+import { COLORS } from "./package/utils/colors";
 
 // Creation and basic configuratiob
 const root = document.querySelector("#root")!;

@@ -1,6 +1,6 @@
-import { ButtonsHelper } from "./engine/helpers/buttonsHelper";
-import { CameraControls } from "./engine/helpers/cameraControls";
-import { Scene } from "./engine/scene/scene";
+import { ButtonsHelper } from "./package/engine/helpers/buttonsHelper";
+import { CameraControls } from "./package/engine/helpers/cameraControls";
+import { Scene } from "./package/engine/scene/scene";
 
 
 export const myCustomButtonsHelper = (scene: Scene, cameraControls: CameraControls) => {
