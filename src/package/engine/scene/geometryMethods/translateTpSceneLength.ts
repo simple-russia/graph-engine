@@ -1,3 +1,3 @@
 export function translateToSceneLength(length: number) {
-    return length / this.camera.zoom;
+    return length * this.camera.zoom;
 }

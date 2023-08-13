@@ -162,13 +162,13 @@ export class AxesHelper extends Object2D {
             if (isZero(x)) {
                 // Draw zero
                 label.position.x = x;
-                label.position.y = yLabelOffset / scene.camera.zoom; // TODO use scene/camera methods
+                label.position.y = yLabelOffset * scene.camera.zoom;
                 continue;
             };
 
             // Change the label
             label.position.x = x;
-            label.position.y = yLabelOffset / scene.camera.zoom; // TODO use scene/camera methods
+            label.position.y = yLabelOffset * scene.camera.zoom;
             label.text = x.toFixed(showDecimalNumbers);
 
             // Labels opacity
@@ -235,7 +235,7 @@ export class AxesHelper extends Object2D {
 
             // Change the label
             label.position.y = y;
-            label.position.x = xLabelOffset / scene.camera.zoom;
+            label.position.x = xLabelOffset * scene.camera.zoom;
             label.text = y.toFixed(showDecimalNumbers);
 
             // Labels opacity

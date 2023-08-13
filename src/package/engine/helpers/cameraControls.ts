@@ -66,8 +66,8 @@ export class CameraControls {
             if (this.isMouseDown) {
                 const camera = this.scene.camera;
 
-                camera.translateX(-e.movementX / camera.zoom);
-                camera.translateY(e.movementY / camera.zoom);
+                camera.translateX(-e.movementX * camera.zoom);
+                camera.translateY(e.movementY * camera.zoom);
 
                 this.eventHandler.emit("drag");
             }
