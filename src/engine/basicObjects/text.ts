@@ -15,13 +15,14 @@ export class Text extends Object2D {
     public opacity: number;
 
 
-    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false, opacity = 1) {
+    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false, opacity = 1, renderPriotiy = 1) {
         super();
         this.color = color;
         this.position = position;
         this.fontSize = fontSize;
         this.text = text;
         this.ignoreZoom = ignoreZoom;
+        this.renderPriority = renderPriotiy;
         this.opacity = opacity;
     }
 

@@ -22,7 +22,7 @@ export class Camera {
     constructor () {
         this.zoom = 1;
         this.position = { x: 0, y: 0 };
-        this.boundingBoxViewOffset = 100;
+        this.boundingBoxViewOffset = 50;
     }
 
 

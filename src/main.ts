@@ -32,34 +32,30 @@ scene.start();
 // Functions
 scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
 scene.add(new MathFunction((x => Math.sin(x * 0.05) * 100), 0x2222DD));
-// scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
-// scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
+scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
+scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
 
-// Fun texts
+
+// @ts-ignore
+window.erth = new Text("Earth", { x: 80, y: 100 }, 30, COLORS.WHITE, false, 1, 40);
+// @ts-ignore
+// scene.add(window.erth);
+
+
 scene.add(new Text("Made by Danya (simple.alex)", { x: 100, y: 200 }, 16, COLORS.RED));
 scene.add(new Text("Press Button -z", { x: 100, y: 170 }, 24, COLORS.ORANGE));
-
-scene.add(new Text("Earth", { x: 80, y: 100 }, 30, COLORS.WHITE));
 scene.add(new Text("12,742 km", { x: 80, y: 70 }, 30, COLORS.BLUE));
-
 scene.add(new Text("The moon", { x: 10, y: 25 }, 7.8, COLORS.WHITE));
 scene.add(new Text("3,478 km", { x: 10, y: 25 - 7.8 }, 7.8, COLORS.BLUE));
-
 scene.add(new Text("Eiffel Tower", { x: 2, y: 4.5 }, 2, COLORS.WHITE));
 scene.add(new Text("300m", { x: 2, y: 4.5 - 2 }, 2, COLORS.BLUE));
-
 scene.add(new Text("Michael Jordan", { x: 0.2, y: 0.4 }, .2, COLORS.WHITE));
 scene.add(new Text("1.98m", { x: 0.2, y: 0.4 - .2 }, 0.2, COLORS.BLUE));
-
 scene.add(new Text("The average cat", { x: 0.04, y: 0.1 }, .05, COLORS.WHITE));
 scene.add(new Text("25cm", { x: 0.04, y: 0.1 - .05 }, .05, COLORS.BLUE));
-
 scene.add(new Text("Адекватность верстальщиков", { x: 0.01, y: 0.01 }, .002, COLORS.WHITE));
 scene.add(new Text("2.5cm", { x: 0.01, y: 0.01 - .002 }, .002, COLORS.BLUE));
-
 scene.add(new Text("Now press HA to get back:)", { x: 0.01, y: -0.01 }, .002, COLORS.ORANGE));
-
-
 
 scene.add(new Square({ width: 400, height: 300, position: { x: -275, y: 200 }, strokeColor: 0x00FF00 }));
 scene.add(new Text("graph-engine.js", { x: -440, y: 310 }, 20, COLORS.YELLOW));
@@ -74,13 +70,33 @@ scene.add(new Text("the source code here below:", { x: -440, y: 100 }, 20, COLOR
 scene.add(new Text("https://github.com/simple-russia/gra...", { x: -440, y: 75 }, 20, 0x5555FF));
 
 
+
 scene.add(new Square({ bgColor: COLORS.WHITE, height: 20, width: 100, position: { x: 110, y: -60 } }));
 scene.add(new Square({ bgColor: COLORS.BLUE, height: 20, width: 100, position: { x: 110, y: -80 } }));
 scene.add(new Square({ bgColor: COLORS.RED, height: 20, width: 100, position: { x: 110, y: -100 } }));
 
-scene.add(new Circle({ bgColor: 0x990099, position: { x: -150, y: -150 }, radius: 50 }));
 
-scene.add(new Text("Testing circles", { x: 180, y: -200 }, 30, COLORS.WHITE));
+scene.add(new Text("Testing zIndex", { x: -160, y: -30 }, 30, COLORS.WHITE));
+const red_sq = new Square({ bgColor: COLORS.RED, height: 50, width: 60, position: { x: -100, y: -70 }, zIndex: 50 });
+const green_sq = new Square({ bgColor: COLORS.GREEN, height: 50, width: 60, position: { x: -100, y: -90 }, zIndex: 53 });
+const blue_sq = new Square({ bgColor: COLORS.BLUE, height: 50, width: 60, position: { x: -100, y: -110 }, zIndex: 56 });
+const yellow_sq = new Square({ bgColor: COLORS.YELLOW, height: 90, width: 60, position: { x: -140, y: -100 }, zIndex: 59 });
+
+scene.add(green_sq);
+scene.add(red_sq);
+scene.add(blue_sq);
+scene.add(yellow_sq);
+
+function zIndexTest () {
+    setTimeout(() => yellow_sq.renderPriority = 55, 1000);
+    setTimeout(() => yellow_sq.renderPriority = 52, 2000);
+    setTimeout(() => yellow_sq.renderPriority = 49, 3000);
+    setTimeout(() => yellow_sq.renderPriority = 59, 4000);
+    setTimeout(() => zIndexTest(), 4000);
+}
+zIndexTest();
+
+scene.add(new Circle({ bgColor: 0x990099, position: { x: -250, y: -250 }, radius: 50 }));
 
 
 for (let i = 0; i < 10_000; i++) {
@@ -108,7 +124,7 @@ for (let i = 0; i < 300; i++) {
     scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 25000 + 4000, width: Math.random() * 25000 + 4000, lineWidth: 240, position: pos, strokeColor: 0xFF0000 }));
 }
 
-const sl = new StraightLine({ x: -100, y: -100 }, { x: -400, y: -100 }, { color: 0x00FFFF });
+const sl = new StraightLine({ x: -100, y: -100 }, { x: -400, y: -100 }, { color: 0x00FFFF, zIndex: 10 });
 scene.add(sl);
 // @ts-ignore
 window.sl = sl;

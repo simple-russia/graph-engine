@@ -9,6 +9,7 @@ import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
 import { objectSeen } from "./geometryMethods/objectSeen";
 import { translateToCanvasLength } from "./geometryMethods/translateToCanvasLength";
 import { translateToSceneLength } from "./geometryMethods/translateTpSceneLength";
+import { addToScene, recomputePositionInChildren } from "./generalMethods/addToScene";
 
 
 
@@ -114,7 +115,6 @@ export class Scene {
         const fillStyle = color(this.bgColor);
         ctx.fillStyle = fillStyle;
         ctx.fillRect(viewbox.min.x, viewbox.min.y, viewbox.max.x - viewbox.min.x, viewbox.max.y - viewbox.min.y);
-        (Math.random() > 0.95) && console.log(viewbox.max.y, viewbox.min.y);
 
 
         this.children.forEach(object2d => {
@@ -129,16 +129,17 @@ export class Scene {
         this.eventHandler.emit("render");
     }
 
-    add (object2d: Object2D) {
-        if (this.children.includes(object2d)) return ;
+    // add (object2d: Object2D) {
+    //     if (this.children.includes(object2d)) return ;
 
-        this.children.push(object2d);
+    //     this.children.push(object2d);
 
-        if (object2d.onAddedToScene) {
-            object2d.onAddedToScene(this);
-        }
-
-    }
+    //     if (object2d.onAddedToScene) {
+    //         object2d.onAddedToScene(this);
+    //     }
+    // }
+    add = addToScene;
+    recomputePositionInChildren = recomputePositionInChildren;
 
     remove (object2d: Object2D) {
         this.children = this.children.filter(obj => obj !== object2d);

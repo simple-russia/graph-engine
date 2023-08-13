@@ -11,6 +11,7 @@ interface ILineOptions {
     opacity: number;
     ignoreZoom: boolean;
     ignoreSmallPointOptimization: boolean;
+    zIndex: number;
 }
 
 const LINE_DEFAULT_OPTIONS: ILineOptions = {
@@ -19,6 +20,7 @@ const LINE_DEFAULT_OPTIONS: ILineOptions = {
     ignoreZoom: false,
     opacity: 1,
     ignoreSmallPointOptimization: false,
+    zIndex: 1,
 };
 
 
@@ -46,6 +48,7 @@ export class StraightLine extends PolylinePrimitive {
             { x: point2.x, y: point2.y, cp1x: null, cp1y: null, cp2x: null, cp2y: null }
         ];
         this.computeBoundingBox();
+        this.renderPriority = options.zIndex;
     }
 
     render (scene: Scene) {
@@ -61,8 +64,6 @@ export class StraightLine extends PolylinePrimitive {
     }
 
     getBoundingBox(): BoundingBox {
-        (Math.random() > 0.99997) && console.log("bb");
-
         return super.getBoundingBox();
     }
 }

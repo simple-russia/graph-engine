@@ -15,6 +15,8 @@ const minXSteps = 7;
 
 const secondaryGridAdditionalOpacity = 0.8;
 
+const AXES_COLOR = 0x333333;
+
 
 type LabelStep = number;
 type SecondaryGridStep = number;
@@ -64,23 +66,23 @@ export class AxesHelper extends Object2D {
     private gridSecondaryVerticalLines: StraightLine[];
     private gridSecondaryHorizontalLines: StraightLine[];
 
-    public renderPriority: number = -1;
-
-
     constructor () {
         super();
 
         this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
         this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
 
-        this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true));
-        this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true));
-
-        this.gridVerticalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
-        this.gridHorizontalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
-
-        this.gridSecondaryVerticalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
-        this.gridSecondaryHorizontalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: 0x333333 }));
+        this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true, 0, 100));
+        this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true, 0, 100));
+        // 0x333333
+        this.gridVerticalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
+        this.gridHorizontalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
+        // @ts-ignore
+        window.gr = this.gridHorizontalLines;
+        // @ts-ignore
+        window.vr = this.gridVerticalLines;
+        this.gridSecondaryVerticalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
+        this.gridSecondaryHorizontalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
     }
 
 

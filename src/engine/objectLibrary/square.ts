@@ -11,6 +11,7 @@ interface ISquareArgs {
     bgColor: number | null
     strokeColor: number | null
     lineWidth: number
+    zIndex: number
 }
 
 const SQUARE_DEFAULT_OPTIONS: ISquareArgs = {
@@ -19,7 +20,8 @@ const SQUARE_DEFAULT_OPTIONS: ISquareArgs = {
     bgColor: null,
     strokeColor: null,
     lineWidth: 1,
-    position: { x: 0, y: 0 }
+    position: { x: 0, y: 0 },
+    zIndex: 1,
 };
 
 export class Square extends PolylinePrimitive {
@@ -44,6 +46,8 @@ export class Square extends PolylinePrimitive {
                 { x: options.position.x + options.width / 2, y: options.position.y - options.height / 2, cp1x: null, cp1y: null, cp2x: null, cp2y: null },
             ],
         });
+
+        this.renderPriority = options.zIndex;
     }
 
 

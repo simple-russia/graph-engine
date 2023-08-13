@@ -27,7 +27,7 @@ export class MathFunction extends Object2D {
         this.color = color;
         this.formula = formula;
 
-        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true, ignoreSmallPointOptimization: true }));
+        this.functionLines = Array(totalLines).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { color, lineWidth: 2, ignoreZoom: true, ignoreSmallPointOptimization: true, zIndex: 50 }));
     }
 
 
