@@ -9,7 +9,8 @@ import { map2DPointToCanvas } from "./geometryMethods/map2DPointToCanvas";
 import { objectSeen } from "./geometryMethods/objectSeen";
 import { translateToCanvasLength } from "./geometryMethods/translateToCanvasLength";
 import { translateToSceneLength } from "./geometryMethods/translateTpSceneLength";
-import { addToScene, recomputePositionInChildren } from "./generalMethods/addToScene";
+import { addToScene } from "./generalMethods/addToScene";
+import { recomputeObjectRenderPosition } from "./generalMethods/recomputeObjectRenderPosition";
 
 
 
@@ -139,7 +140,7 @@ export class Scene {
     //     }
     // }
     add = addToScene;
-    recomputePositionInChildren = recomputePositionInChildren;
+    recomputeObjectRenderPosition = recomputeObjectRenderPosition;
 
     remove (object2d: Object2D) {
         this.children = this.children.filter(obj => obj !== object2d);

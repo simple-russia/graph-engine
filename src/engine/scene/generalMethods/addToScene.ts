@@ -51,9 +51,3 @@ export function addToScene (object2d: Object2D) {
         object2d.onAddedToScene(this);
     }
 }
-
-
-export function recomputePositionInChildren (object2d: Object2D) {
-    this.remove(object2d);
-    this.add(object2d);
-}

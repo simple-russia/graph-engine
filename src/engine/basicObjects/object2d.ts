@@ -19,7 +19,7 @@ export abstract class Object2D {
         // TODO make a separate method for recalculating this
 
         if (this.scene) {
-            this.scene.recomputePositionInChildren(this);
+            this.scene.recomputeObjectRenderPosition(this);
         }
     }
 
