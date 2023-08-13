@@ -1,3 +1,3 @@
 export function translateToCanvasLength(length: number) {
-    return length * this.camera.zoom;
+    return length / this.camera.zoom;
 }

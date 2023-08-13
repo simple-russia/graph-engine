@@ -35,7 +35,7 @@ export class Text extends Object2D {
         const ctx = scene.canvas.getContext("2d");
         const camera = scene.camera;
 
-        const fontSize = this.fontSize / (this.ignoreZoom ? 1 : camera.zoom);
+        const fontSize = this.fontSize * (this.ignoreZoom ? 1 : camera.zoom);
 
         ctx.fillStyle = color(this.color, this.opacity);
         ctx.font = `${fontSize}px Arial`;
@@ -45,14 +45,15 @@ export class Text extends Object2D {
 
         textPos.y *= -1;
 
-        textPos.x = textPos.x * 1 / camera.zoom;
-        textPos.y = textPos.y * 1 / camera.zoom;
+        // TODO use scene methods
+        textPos.x = textPos.x * camera.zoom;
+        textPos.y = textPos.y * camera.zoom;
 
         textPos.x += scene.width / 2;
         textPos.y += scene.height / 2;
 
-        textPos.x += -scene.camera.position.x * 1 / camera.zoom;
-        textPos.y += scene.camera.position.y * 1 / camera.zoom;
+        textPos.x += -scene.camera.position.x * camera.zoom;
+        textPos.y += scene.camera.position.y * camera.zoom;
 
         ctx.fillText(this.text, textPos.x, textPos.y);
     }

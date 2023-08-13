@@ -5,8 +5,8 @@ import { point2D } from "./types";
 
 
 const DEFAULT_ZOOM_STEP = 0.97;
-const MAX_ZOOM = 1000000;
-const MIN_ZOOM = 0.00000001;
+const MIN_ZOOM = 10000000;
+const MAX_ZOOM = 0.0000001;
 
 export class Camera {
     public position: point2D = createPositionObservable({
@@ -36,22 +36,20 @@ export class Camera {
 
         this.computeViewBoundingBox();
 
-        function canvasResizeCameraCalback () {
+        function canvasResizeCameraCallback () {
             this.computeViewBoundingBox();
         }
 
-        scene.eventHandler.subscribe("canvasResize", canvasResizeCameraCalback.bind(this));
+        scene.eventHandler.subscribe("canvasResize", canvasResizeCameraCallback.bind(this));
     }
 
 
     public translateX(n: number) {
-        // TODO move to observable
         this.position.x = this.position.x + n;
-        // this.computeViewBoundingBox();
     }
+
     public translateY(n: number) {
         this.position.y = this.position.y + n;
-        // this.computeViewBoundingBox();
     }
 
 
@@ -63,12 +61,12 @@ export class Camera {
 
         let newZoom = value;
 
-        if (newZoom > MAX_ZOOM) {
-            newZoom = MAX_ZOOM;
+        if (newZoom > MIN_ZOOM) {
+            newZoom = MIN_ZOOM;
         }
 
-        if (newZoom < MIN_ZOOM) {
-            newZoom = MIN_ZOOM;
+        if (newZoom < MAX_ZOOM) {
+            newZoom = MAX_ZOOM;
         }
 
         this.__realZoom = newZoom;
@@ -77,10 +75,10 @@ export class Camera {
     }
 
     public zoomIn(value=DEFAULT_ZOOM_STEP) {
-        this.zoom = this.zoom * value;
+        this.zoom = this.zoom / value;
     }
     public zoomOut(value=DEFAULT_ZOOM_STEP) {
-        this.zoom = this.zoom / value;
+        this.zoom = this.zoom * value;
     }
 
 
@@ -127,10 +125,11 @@ export class Camera {
         const width = this.scene.width;
         const height = this.scene.height;
 
-        const leftBoundary = centerX - (width / 2) * this.zoom;
-        const rightBoundary = centerX + (width / 2) * this.zoom;
-        const bottomBoundary = centerY - (height / 2) * this.zoom;
-        const topBoundary = centerY + (height / 2) * this.zoom;
+        // TODO use scene methods
+        const leftBoundary = centerX - (width / 2) / this.zoom;
+        const rightBoundary = centerX + (width / 2) / this.zoom;
+        const bottomBoundary = centerY - (height / 2) / this.zoom;
+        const topBoundary = centerY + (height / 2) / this.zoom;
 
         this.viewBoundingBox = {
             max: {

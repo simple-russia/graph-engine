@@ -46,7 +46,8 @@ export class MathFunction extends Object2D {
     }
 
     render (scene: Scene) {
-        const visibleXRange = scene.width * scene.camera.zoom;
+        // TODO use scene methods
+        const visibleXRange = scene.width / scene.camera.zoom;
         const step = visibleXRange / stepsPerVisible;
 
         let center = scene.camera.position.x;
