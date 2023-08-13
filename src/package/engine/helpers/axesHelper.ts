@@ -72,15 +72,14 @@ export class AxesHelper extends Object2D {
         this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
         this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
 
-        this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true, 0, 100));
-        this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true, 0, 100));
-        // 0x333333
+        // this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true, 0, 100));
+        // this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true, 0, 100));
+        this.xLabels = Array(maxXSteps).fill(null).map(() => new Text({ color: COLORS.WHITE, ignoreZoom: true, renderPriotiy: 100, fontSize: 15 }));
+        this.yLabels = Array(maxXSteps).fill(null).map(() => new Text({ color: COLORS.WHITE, ignoreZoom: true, renderPriotiy: 100, fontSize: 15 }));
+
         this.gridVerticalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
         this.gridHorizontalLines = Array(maxXSteps).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
-        // @ts-ignore
-        window.gr = this.gridHorizontalLines;
-        // @ts-ignore
-        window.vr = this.gridVerticalLines;
+
         this.gridSecondaryVerticalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
         this.gridSecondaryHorizontalLines = Array(maxXSteps * 5).fill(null).map(() => new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: AXES_COLOR, zIndex: -10000 }));
     }
@@ -180,8 +179,9 @@ export class AxesHelper extends Object2D {
                 label.position.y = cameraViewBox.max.y;
             }
 
-            // TODO change to some contanct. Step is always different
+            // == After how many pixels of offset form viewbox should start making axes transparent
             const TRANSPARENCY_OFFSET = scene.translateToCanvasLength(350);
+
             if (label.position.x > bounds.rightBoundary - TRANSPARENCY_OFFSET) {
                 const gap = bounds.rightBoundary - TRANSPARENCY_OFFSET;
                 label.opacity = 1 - (label.position.x - gap) / TRANSPARENCY_OFFSET;

@@ -3,8 +3,28 @@ import { Scene } from "../scene/scene";
 import { Object2D } from "./object2d";
 import { color } from "../../utils/color";
 import { BoundingBox } from "./types";
+import { createPositionObservable } from "../../utils/observables/position";
 
 
+interface ITextProps {
+    text: string
+    position: point2D
+    fontSize: number
+    color: number
+    ignoreZoom: boolean
+    opacity: number
+    renderPriotiy: number
+}
+
+const TEXT_DEFAULT_OPTIONS: ITextProps = {
+    color: 0x000000,
+    fontSize: 30,
+    ignoreZoom: false,
+    opacity: 1,
+    position: { x: 0, y: 0 },
+    renderPriotiy: 1,
+    text: "",
+};
 
 export class Text extends Object2D {
     public position: point2D;
@@ -15,15 +35,20 @@ export class Text extends Object2D {
     public opacity: number;
 
 
-    constructor(text: string, position: point2D = { x: 0, y: 0 }, fontSize: number = 30, color = 0x000000, ignoreZoom = false, opacity = 1, renderPriotiy = 1) {
+    constructor(options: Partial<ITextProps> = {}) {
+        options = { ...TEXT_DEFAULT_OPTIONS, ...options };
+
         super();
-        this.color = color;
-        this.position = position;
-        this.fontSize = fontSize;
-        this.text = text;
-        this.ignoreZoom = ignoreZoom;
-        this.renderPriority = renderPriotiy;
-        this.opacity = opacity;
+        this.color = options.color;
+        this.position = options.position;
+
+        this.position = createPositionObservable({ x: options.position.x, y: options.position.y });
+
+        this.fontSize = options.fontSize;
+        this.text = options.text;
+        this.ignoreZoom = options.ignoreZoom;
+        this.renderPriority = options.renderPriotiy;
+        this.opacity = options.opacity;
     }
 
 
