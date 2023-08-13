@@ -1,3 +1,4 @@
+import { createPositionObservable } from "../utils/observables/position";
 import { BoundingBox } from "./basicObjects/types";
 import { Scene } from "./scene/scene";
 import { point2D } from "./types";
@@ -8,39 +9,55 @@ const MAX_ZOOM = 1000000;
 const MIN_ZOOM = 0.00000001;
 
 export class Camera {
+    public position: point2D = createPositionObservable({
+        onUpdate: this.computeViewBoundingBox.bind(this)
+    });
+
+    public scene: Scene;
     private __realZoom = 1;
-    public position: point2D = { x: 0, y: 0 };
 
     // TODO fix initial bounding
     private viewBoundingBox: BoundingBox = { max: { x: 10, y: 10 }, min: { x: 0, y: 0 } };
-
-    public scene: Scene;
-
     public boundingBoxViewOffset: number;
+
+
 
 
     constructor () {
         this.zoom = 1;
-        this.position = { x: 0, y: 0 };
         this.boundingBoxViewOffset = 50;
+    }
+
+
+
+
+    onAddedToScene (scene: Scene) {
+        this.scene = scene;
+
+        this.computeViewBoundingBox();
+
+        function canvasResizeCameraCalback () {
+            this.computeViewBoundingBox();
+        }
+
+        scene.eventHandler.subscribe("canvasResize", canvasResizeCameraCalback.bind(this));
     }
 
 
     public translateX(n: number) {
         // TODO move to observable
         this.position.x = this.position.x + n;
-        this.computeViewBoundingBox();
+        // this.computeViewBoundingBox();
     }
-
     public translateY(n: number) {
         this.position.y = this.position.y + n;
-        this.computeViewBoundingBox();
+        // this.computeViewBoundingBox();
     }
+
 
     get zoom() {
         return this.__realZoom;
     }
-
     set zoom(value) {
         if (typeof value !== "number" || Number.isNaN(value)) return ;
 
@@ -59,26 +76,15 @@ export class Camera {
         this.computeViewBoundingBox();
     }
 
-    onAddedToScene (scene: Scene) {
-        this.scene = scene;
-
-        this.computeViewBoundingBox();
-
-        function canvasResizeCameraCalback () {
-            this.computeViewBoundingBox();
-        }
-
-        scene.eventHandler.subscribe("canvasResize", canvasResizeCameraCalback.bind(this));
-    }
-
     public zoomIn(value=DEFAULT_ZOOM_STEP) {
         this.zoom = this.zoom * value;
     }
-
     public zoomOut(value=DEFAULT_ZOOM_STEP) {
         this.zoom = this.zoom / value;
     }
 
+
+    // Getting camera boundaries in scene's pixels
     public getVisibleBoundaries () {
         const bbox = this.getViewBoundingBox();
 
@@ -94,6 +100,7 @@ export class Camera {
         return this.viewBoundingBox;
     }
 
+    // Getting camera viewbox in CSS pixels
     public getCanvasViewbox () {
         const bbox = this.getViewBoundingBox();
 
@@ -106,11 +113,13 @@ export class Camera {
         };
     }
 
+    // Computed camera's bounding viewbox (in scene's pixels)
     public computeViewBoundingBox () {
         if (!this.scene) {
             return ;
         }
 
+        // Viewbox padding, where OFFSET is in scene pixels, boundingBoxViewOffsset in CSS pixels
         const OFFSET = this.scene.translateToSceneLength(this.boundingBoxViewOffset);
 
         const centerX = this.position.x;
