@@ -11,26 +11,27 @@ import { translateToCanvasLength } from "./geometryMethods/translateToCanvasLeng
 import { translateToSceneLength } from "./geometryMethods/translateTpSceneLength";
 import { addToScene } from "./generalMethods/addToScene";
 import { recomputeObjectRenderPosition } from "./generalMethods/recomputeObjectRenderPosition";
+import { removeFromScene } from "./generalMethods/removeFromScene";
 
 
 
 export class Scene {
     public canvas: HTMLCanvasElement;
+    public children: Object2D[];
+    public eventHandler: EventHandler;
+    public camera: Camera;
+
     public bgColor = 0x00FF00;
     public width: number;
     public height: number;
-    public camera: Camera;
-    public isRunning = false;
+    public isRenderCycleRunning = false;
 
     private maxFps = 30;
     private renderIntervalId: number;
     private objectsRendered = 0;
-
-    public children: Object2D[];
-
     private currentFramesCount = 0;
 
-    public eventHandler: EventHandler;
+
 
 
     constructor (rootElement: Element) {
@@ -53,59 +54,23 @@ export class Scene {
 
         rootElement.appendChild(canvas);
 
-        this.preventContextMenu();
-        this.fpsMeasure();
+        this.preventContextMenu(); // Start preventing context menu
+        this.fpsMeasure(); // Start measuring fps
 
         this.eventHandler = new EventHandler(["render", "fpsUpdate"]);
 
+        // Start observing parent's resizing
         function resizeCallback () {
             this.computeCanvasDimensions();
         }
-
         const sizeObserver = new ResizeObserver(resizeCallback.bind(this));
         sizeObserver.observe(this.canvas.parentElement);
     }
 
 
-    start () {
-        if (this.isRunning) throw new Error("Scene is already running");
 
-        const frame_time = 1000 / this.maxFps;
 
-        this.renderIntervalId = window.setInterval(() => {
-            queueMicrotask(this.render.bind(this));
-        }, frame_time);
-
-        this.isRunning = true;
-    }
-
-    stop () {
-        clearInterval(this.renderIntervalId);
-        this.isRunning = false;
-    }
-
-    restart () {
-        this.stop();
-        this.start();
-    }
-
-    get fps() {
-        return this.maxFps;
-    }
-
-    set fps(newFps) {
-        if (this.maxFps === newFps) return ;
-        if (typeof newFps !== "number") throw new Error(`FPS must be Number, instead got ${typeof newFps}`);
-        if (Number.isNaN(newFps)) throw new Error("Scene FPS cannot be NaN");
-        if (!Number.isInteger(newFps)) throw new Error(`FPS must be an integer. Instead got ${newFps}`);
-
-        this.maxFps = newFps;
-
-        if (this.isRunning) {
-            this.restart();
-        }
-    }
-
+    // Synchronously render whole scene once
     render () {
         const viewbox = this.camera.getCanvasViewbox();
         const ctx = this.canvas.getContext("2d");
@@ -130,30 +95,62 @@ export class Scene {
         this.eventHandler.emit("render");
     }
 
-    // add (object2d: Object2D) {
-    //     if (this.children.includes(object2d)) return ;
+    // Start constant rerender cycle
+    start () {
+        if (this.isRenderCycleRunning) throw new Error("Scene is already running");
 
-    //     this.children.push(object2d);
+        const frame_time = 1000 / this.maxFps;
 
-    //     if (object2d.onAddedToScene) {
-    //         object2d.onAddedToScene(this);
-    //     }
-    // }
-    add = addToScene;
-    recomputeObjectRenderPosition = recomputeObjectRenderPosition;
+        this.renderIntervalId = window.setInterval(() => {
+            queueMicrotask(this.render.bind(this));
+        }, frame_time);
 
-    remove (object2d: Object2D) {
-        this.children = this.children.filter(obj => obj !== object2d);
+        this.isRenderCycleRunning = true;
+    }
 
-        if (object2d.onRemovedFromScene) {
-            object2d.onRemovedFromScene(this);
+    // Stop active running rerender cycle
+    stop () {
+        clearInterval(this.renderIntervalId);
+        this.isRenderCycleRunning = false;
+    }
+
+    // Restart rerender cycle
+    restart () {
+        this.stop();
+        this.start();
+    }
+
+
+    // Max scene fps setting getter
+    get fps() {
+        return this.maxFps;
+    }
+
+    // Max scene fps setting etter
+    set fps(newFps) {
+        if (this.maxFps === newFps) return ;
+        if (typeof newFps !== "number") throw new Error(`FPS must be Number, instead got ${typeof newFps}`);
+        if (Number.isNaN(newFps)) throw new Error("Scene FPS cannot be NaN");
+        if (!Number.isInteger(newFps)) throw new Error(`FPS must be an integer. Instead got ${newFps}`);
+
+        this.maxFps = newFps;
+
+        if (this.isRenderCycleRunning) {
+            this.restart();
         }
     }
+
+    // General scene methods
+    add = addToScene; // Add an object to scene
+    recomputeObjectRenderPosition = recomputeObjectRenderPosition; // Recompute child's position in the children list based on its renderPriority
+    remove = removeFromScene; // Remove an object from scene
+
 
     private preventContextMenu () {
         this.canvas.addEventListener("contextmenu", e => e.preventDefault());
     }
 
+    // Constant emitting of fps update event (every second)
     private fpsMeasure () {
         setInterval(() => {
             this.eventHandler.emit("fpsUpdate", { fps: this.currentFramesCount, obj: this.objectsRendered });
@@ -162,7 +159,7 @@ export class Scene {
         }, 1000);
     }
 
-
+    // For resize callback
     computeCanvasDimensions () {
         const cont = this.canvas.parentElement;
 
