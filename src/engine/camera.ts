@@ -61,7 +61,14 @@ export class Camera {
 
     onAddedToScene (scene: Scene) {
         this.scene = scene;
+
         this.computeViewBoundingBox();
+
+        function canvasResizeCameraCalback () {
+            this.computeViewBoundingBox();
+        }
+
+        scene.eventHandler.subscribe("canvasResize", canvasResizeCameraCalback.bind(this));
     }
 
     public zoomIn(value=DEFAULT_ZOOM_STEP) {

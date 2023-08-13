@@ -36,6 +36,7 @@ export class Scene {
 
     constructor (rootElement: Element) {
         const canvas = document.createElement("canvas");
+        this.eventHandler = new EventHandler(["render", "fpsUpdate", "canvasResize"]);
 
         const rootWidth = rootElement.clientWidth;
         const rootHeight = rootElement.clientHeight;
@@ -57,10 +58,10 @@ export class Scene {
         this.preventContextMenu(); // Start preventing context menu
         this.fpsMeasure(); // Start measuring fps
 
-        this.eventHandler = new EventHandler(["render", "fpsUpdate"]);
 
         // Start observing parent's resizing
         function resizeCallback () {
+            this.eventHandler.emit("canvasResize");
             this.computeCanvasDimensions();
         }
         const sizeObserver = new ResizeObserver(resizeCallback.bind(this));
@@ -182,5 +183,4 @@ export class Scene {
 
     objectSeen = objectSeen;
     getObjectToPixelRatio = getObjectToPixelRatio;
-
 }
