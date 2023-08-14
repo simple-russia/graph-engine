@@ -10,7 +10,6 @@ export function objectSeen (object: Object2D) {
     }
 
     if (!viewBox || boundingBox.max.x < viewBox.min.x || boundingBox.min.x > viewBox.max.x) {
-        // console.log(boundingBox.min.x, boundingBox.max.x);
         return false;
     }
 

@@ -72,8 +72,6 @@ export class AxesHelper extends Object2D {
         this.xAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
         this.yAxis = new StraightLine({ x: 0, y: 0 }, { x: 0, y: 0 }, { ignoreZoom: true, color: COLORS.WHITE });
 
-        // this.xLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 50, y: 10 }, 15, COLORS.WHITE, true, 0, 100));
-        // this.yLabels = Array(maxXSteps).fill(null).map(() => new Text("", { x: 10, y: 50 }, 15, COLORS.WHITE, true, 0, 100));
         this.xLabels = Array(maxXSteps).fill(null).map(() => new Text({ color: COLORS.WHITE, ignoreZoom: true, renderPriotiy: 100, fontSize: 15 }));
         this.yLabels = Array(maxXSteps).fill(null).map(() => new Text({ color: COLORS.WHITE, ignoreZoom: true, renderPriotiy: 100, fontSize: 15 }));
 
@@ -136,9 +134,9 @@ export class AxesHelper extends Object2D {
         // Axes points
         this.xAxis.points[0].x = bounds.leftBoundary;
         this.xAxis.points[1].x = bounds.rightBoundary;
-        this.xAxis.computeBoundingBox();
         this.yAxis.points[0].y = bounds.topBoundary;
         this.yAxis.points[1].y = bounds.bottomBoundary;
+        this.xAxis.computeBoundingBox();
         this.yAxis.computeBoundingBox();
 
         const cameraViewBox = scene.camera.getViewBoundingBox();

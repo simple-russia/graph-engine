@@ -1,4 +1,5 @@
 import { color } from "../../../utils/color";
+import { createPointsObservable } from "../../../utils/observables/polylinePointsObservable";
 import { restrictNumber } from "../../../utils/restrictNumber";
 import { Scene } from "../../scene/scene";
 import { Object2D } from "../object2d";
@@ -26,7 +27,7 @@ export class PolylinePrimitive extends Object2D {
     public bgColor: number | null;
     public bgOpacity: number;
 
-    public points: PolylinePrimitivePoint[];
+    private _points: PolylinePrimitivePoint[];
     public ignoreZoom: boolean;
     public ignoreSmallPointOptimization: boolean;
 
@@ -42,29 +43,48 @@ export class PolylinePrimitive extends Object2D {
         this.bgColor = options.bgColor;
         this.strokeColor = options.strokeColor;
 
-        this.points = options.points;
+        // this.points = options.points;
+        this._points = createPointsObservable({
+            onUpdate: this.computeBoundingBox.bind(this),
+            points: options.points,
+        });
+
         this.ignoreZoom = options.ignoreZoom;
         this.ignoreSmallPointOptimization = options.ignoreSmallPointOptimization;
 
         this.lineWidth = options.lineWidth;
 
-
         this.computeBoundingBox();
     }
+
+
+
+    get points () {
+        return this._points;
+    }
+
+    set points (newPoints) {
+        this._points = createPointsObservable({
+            onUpdate: this.computeBoundingBox.bind(this),
+            points: newPoints,
+        });
+    }
+
 
     getBoundingBox(): BoundingBox {
         return this.boundingBox;
     }
 
     computeBoundingBox () {
-        if (this.points.length === 0) {
+        // Is called too often? check
+        if (this._points.length === 0) {
             return ;
         }
 
         const EXTRA_BOUNDING_PAD = 0;
 
-        const arrX = this.points.reduce((acc, cur) => [...acc, cur.cp1x, cur.cp2x, cur.x], []).filter(x => typeof x === "number");
-        const arrY = this.points.reduce((acc, cur) => [...acc, cur.cp1y, cur.cp2y, cur.y], []).filter(x => typeof x === "number");
+        const arrX = this._points.reduce((acc, cur) => [...acc, cur.cp1x, cur.cp2x, cur.x], []).filter(x => typeof x === "number");
+        const arrY = this._points.reduce((acc, cur) => [...acc, cur.cp1y, cur.cp2y, cur.y], []).filter(x => typeof x === "number");
 
         this.boundingBox = {
             max: { x: Math.max(...arrX) + EXTRA_BOUNDING_PAD, y: Math.max(...arrY) + EXTRA_BOUNDING_PAD },
@@ -75,7 +95,7 @@ export class PolylinePrimitive extends Object2D {
     render (scene: Scene) {
         const ratioToPixel = scene.getObjectToPixelRatio(this);
 
-        if (this.points.length === 0) {
+        if (this._points.length === 0) {
             // Nothing to draw
             return ;
         }
@@ -87,7 +107,7 @@ export class PolylinePrimitive extends Object2D {
 
 
         const ctx = scene.canvas.getContext("2d");
-        const points = this.points;
+        const points = this._points;
 
         const start = scene.map2DPointToCanvas({ ...points[0] });
 

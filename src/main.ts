@@ -30,10 +30,10 @@ myCustomButtonsHelper(scene, cameraControls);
 scene.start();
 
 // Functions
-scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
-scene.add(new MathFunction((x => Math.sin(x * 0.05) * 100), 0x2222DD));
-scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
-scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
+// scene.add(new MathFunction((x => Math.sqrt((100) ** 2 - (x) ** 2)), 0x2222DD));
+// scene.add(new MathFunction((x => Math.sin(x * 0.05) * 100), 0x2222DD));
+// scene.add(new MathFunction((x => -x / Math.sqrt(100**2 - x**2)), 0xDD2222));
+// scene.add(new MathFunction((x => -1 * x ** 2), 0x22BB22));
 
 
 scene.add(new Square({ bgColor: COLORS.WHITE, height: 20, width: 100, position: { x: 110, y: -60 } }));
@@ -91,6 +91,10 @@ for (let i = 0; i < 300; i++) {
     scene.add(new Square({ bgColor: Math.floor(0xFFFFFF * Math.random()), height: Math.random() * 25000 + 4000, width: Math.random() * 25000 + 4000, lineWidth: 240, position: pos, strokeColor: 0xFF0000 }));
 }
 
+const line = new StraightLine({ x: 100, y: 100 }, { x: 200, y: 200 }, { color: 0xFFA500, ignoreZoom: true });
+scene.add(line);
+// @ts-ignore
+window.line = line;
 
 // @ts-ignore
 window.scene = scene;
